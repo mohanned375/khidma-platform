@@ -3,20 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>خدمة</title>
+  <title>خدمة - منصة مقدمي الخدمات</title>
+
+  <!-- خط عربي Tajawal -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- ملف التنسيقات -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <!-- القسم الرئيسي -->
   <div class="hero">
     <h1>منصة خدمة</h1>
-    <p>ابحث عن مقدمي الخدمات وسجّل كمقدم خدمة بسهولة</p>
+    <p>ابحث عن مقدمي الخدمات وسجّل كمقدّم خدمة بسهولة</p>
     <button onclick="showSearch()">🔍 ابحث عن خدمة</button>
     <button onclick="showRegisterForm()">📝 سجل كمقدم خدمة</button>
   </div>
 
-  <!-- البحث عن الخدمات -->
+  <!-- قسم البحث -->
   <section id="servicesGrid" class="search-section" style="display:none;">
     <input type="text" id="searchInput" placeholder="ابحث بالاسم أو الموقع">
     <select id="categorySelect">
@@ -35,7 +41,7 @@
     </div>
   </section>
 
-  <!-- تسجيل مقدم خدمة -->
+  <!-- قسم التسجيل -->
   <section id="registerSection" style="display:none;">
     <h2>تسجيل مقدم خدمة</h2>
     <form id="registerForm">
@@ -67,7 +73,9 @@
       <div id="contactInfo"></div>
     </div>
   </div>
-
+<button class="search-btn" onclick="showSearch()">🔍 ابحث عن خدمة</button>
+<button class="register-btn" onclick="showRegisterForm()">📝 سجل كمقدم خدمة</button>
+  <!-- كود جافاسكربت -->
   <script src="app.js"></script>
 </body>
 </html>
