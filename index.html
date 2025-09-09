@@ -21,6 +21,7 @@
     <button onclick="showSearch()">🔍 ابحث عن خدمة</button>
     <button onclick="showRegisterForm()">📝 سجل كمقدم خدمة</button>
   </div>
+
   <!-- قسم البحث -->
   <section id="servicesGrid" class="search-section" style="display:none;">
     <input type="text" id="searchInput" placeholder="ابحث بالاسم أو الموقع">
@@ -72,9 +73,64 @@
       <div id="contactInfo"></div>
     </div>
   </div>
-
+<button class="search-btn" onclick="showSearch()">🔍 ابحث عن خدمة</button>
+<button class="register-btn" onclick="showRegisterForm()">📝 سجل كمقدم خدمة</button>
   <!-- كود جافاسكربت -->
   <script src="app.js"></script>
 </body>
-</html>
+<head>
+  <meta charset="UTF-8">
+  <title>Firebase Web + App Check</title>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js"></script>
+</head>
+<body>
+  <h1>موقعي مع Firebase</h1>
+  <div id="output"></div>
 
+  <script>
+    // ⚠️ انسخ بيانات التهيئة من Firebase Console -> Project settings -> Config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "khidma-platform-f457.firebaseapp.com",
+      databaseURL: "https://khidma-platform-f457.firebaseio.com",
+      projectId: "khidma-platform-f457",
+      storageBucket: "khidma-platform-f457.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // ✅ تهيئة Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database(app);
+
+    // ✅ تفعيل App Check مع reCAPTCHA v3
+    const appCheck = firebase.appCheck();
+    appCheck.activate(
+      "YOUR_RECAPTCHA_SITE_KEY", // استبدلها بمفتاح reCAPTCHA من Google
+      true // للتجديد التلقائي للتوكن
+    );
+
+    // ✅ مثال: قراءة بيانات من قاعدة البيانات
+    const output = document.getElementById("output");
+    db.ref("services").on("value", (snapshot) => {
+      output.innerHTML = JSON.stringify(snapshot.val(), null, 2);
+    });
+
+    // ✅ مثال: إضافة بيانات جديدة
+    function addService() {
+      const newRef = db.ref("services").push();
+      newRef.set({
+        title: "خدمة تجريبية",
+        description: "هذه خدمة تمت إضافتها من الموقع",
+        price: 100
+      });
+    }
+
+    // تجربة الكتابة بعد 5 ثوانٍ
+    setTimeout(addService, 5000);
+  </script>
+<body>
+<head>
+</html>
