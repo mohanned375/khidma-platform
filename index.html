@@ -1,136 +1,300 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>خدمة - منصة مقدمي الخدمات</title>
-
-  <!-- خط عربي Tajawal -->
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-
-  <!-- ملف التنسيقات -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة خدمة - Service Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4CAF50">
+    <link rel="icon" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="description" content="منصة ربط العملاء بمقدمي الخدمات المختلفة">
+    <meta name="keywords" content="بناء,كهرباء,سباكة,ميكانيكا,نجارة,دهان,حرف يدوية,أخرى">
 </head>
 <body>
-  <div class="hero">
-    <h1>منصة خدمة</h1>
-    <p>ابحث عن مقدمي الخدمات وسجّل كمقدّم خدمة بسهولة</p>
-    <button onclick="showSearch()">🔍 ابحث عن خدمة</button>
-    <button onclick="showRegisterForm()">📝 سجل كمقدم خدمة</button>
-  </div>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <img src="icon-192.png" alt="شعار المنصة" class="logo-img">
+                    <h1>منصة خدمة</h1>
+                </div>
+                <div class="nav-menu">
+                    <button class="nav-btn" onclick="showSection('home')">الرئيسية</button>
+                    <button class="nav-btn" onclick="showSection('services')">الخدمات</button>
+                    <button class="nav-btn" onclick="showSection('register')">تسجيل مقدم خدمة</button>
+                    <button class="nav-btn" onclick="showSection('admin')">لوحة الإدارة</button>
+                </div>
+                <div class="hamburger" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-  <!-- قسم البحث -->
-  <section id="servicesGrid" class="search-section" style="display:none;">
-    <input type="text" id="searchInput" placeholder="ابحث بالاسم أو الموقع">
-    <select id="categorySelect">
-      <option value="">اختر الفئة</option>
-      <option value="electricity">كهرباء</option>
-      <option value="plumbing">سباكة</option>
-      <option value="mechanics">ميكانيكا</option>
-      <option value="carpentry">نجارة</option>
-      <option value="crafts">حرف يدوية</option>
-      <option value="cleaning">تنظيف</option>
-      <option value="painting">دهان</option>
-      <option value="gardening">بستنة</option>
-    </select>
-    <div id="providersSection" style="display:none;">
-      <div id="providersContainer"></div>
-    </div>
-  </section>
+    <!-- Home Section -->
+    <section id="home" class="section active">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>مرحباً بك في منصة خدمة</h1>
+                <p>نربط بينك وبين أفضل مقدمي الخدمات في جميع المجالات</p>
+                <button class="cta-btn" onclick="showSection('services')">ابحث عن خدمة</button>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&h=400&fit=crop" alt="خدمات متنوعة">
+            </div>
+        </div>
 
-  <!-- قسم التسجيل -->
-  <section id="registerSection" style="display:none;">
-    <h2>تسجيل مقدم خدمة</h2>
-    <form id="registerForm">
-      <input type="text" id="providerName" placeholder="الاسم" required>
-      <input type="text" id="providerPhone" placeholder="رقم الهاتف" required>
-      <input type="email" id="providerEmail" placeholder="البريد الإلكتروني">
-      <input type="text" id="providerLocation" placeholder="الموقع" required>
-      <select id="providerCategory" required>
-        <option value="">اختر الفئة</option>
-        <option value="electricity">كهرباء</option>
-        <option value="plumbing">سباكة</option>
-        <option value="mechanics">ميكانيكا</option>
-        <option value="carpentry">نجارة</option>
-        <option value="crafts">حرف يدوية</option>
-        <option value="cleaning">تنظيف</option>
-        <option value="painting">دهان</option>
-        <option value="gardening">بستنة</option>
-      </select>
-      <input type="number" id="providerExperience" placeholder="سنوات الخبرة">
-      <textarea id="providerDescription" placeholder="وصف الخدمة" required></textarea>
-      <button type="submit">تسجيل</button>
-    </form>
-  </section>
+        <div class="features">
+            <div class="feature-card">
+                <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=300&h=200&fit=crop" alt="سهولة البحث">
+                <h3>سهولة البحث</h3>
+                <p>ابحث عن مقدمي الخدمات بسهولة وسرعة</p>
+            </div>
+            <div class="feature-card">
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=300&h=200&fit=crop" alt="خدمات متنوعة">
+                <h3>خدمات متنوعة</h3>
+                <p>جميع أنواع الخدمات في مكان واحد</p>
+            </div>
+            <div class="feature-card">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=300&h=200&fit=crop" alt="تواصل مباشر">
+                <h3>تواصل مباشر</h3>
+                <p>تواصل مباشر مع مقدمي الخدمات</p>
+            </div>
+        </div>
+    </section>
 
-  <!-- نافذة التواصل -->
-  <div id="contactModal" class="modal" style="display:none;">
-    <div class="modal-content">
-      <span onclick="closeContactModal()" class="close">&times;</span>
-      <div id="contactInfo"></div>
-    </div>
-  </div>
-<button class="search-btn" onclick="showSearch()">🔍 ابحث عن خدمة</button>
-<button class="register-btn" onclick="showRegisterForm()">📝 سجل كمقدم خدمة</button>
-  <!-- كود جافاسكربت -->
-  <script src="app.js"></script>
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <div class="container">
+            <h2>فئات الخدمات</h2>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="ابحث عن خدمة أو مقدم خدمة...">
+                <button onclick="searchServices()">بحث</button>
+            </div>
+            
+            <div class="services-grid" id="servicesGrid">
+                <div class="service-category" data-category="electricity">
+				<img
+                    src="https://vhv.rs/d/hTwobhw/building-and-construction-png-download-3d-building-transparent.png" 
+                    alt="منزل تحت التشييد"
+                    width="200"
+                    height="300"
+                    style="object-fit: contain;">
+
+                    <h3>البناء </h3>
+                    <p>بناؤون مهرة </p>
+                    <button onclick="showServiceProviders('electricity')">عرض المقدمين</button>
+                </div>
+                				
+            <div class="services-grid" id="servicesGrid">
+                <div class="service-category" data-category="electricity">
+                    <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=300&h=200&fit=crop" alt="كهرباء">
+                    <h3>الكهرباء</h3>
+                    <p>فنيين كهرباء محترفين</p>
+                    <button onclick="showServiceProviders('electricity')">عرض المقدمين</button>
+                </div>
+				
+																						
+                <div class="service-category" data-category="plumbing">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop" alt="سباكة">
+                    <h3>السباكة</h3>
+                    <p>خبراء السباكة والصرف الصحي</p>
+                    <button onclick="showServiceProviders('plumbing')">عرض المقدمين</button>
+                </div>
+                
+                <div class="service-category" data-category="mechanics">
+                    <img src="https://images.unsplash.com/photo-1486312338219-ce68e2c6f44d?w=300&h=200&fit=crop" alt="ميكانيكا">
+                    <h3>الميكانيكا</h3>
+                    <p>مختصين في إصلاح السيارات</p>
+                    <button onclick="showServiceProviders('mechanics')">عرض المقدمين</button>
+                </div>
+                
+                <div class="service-category" data-category="carpentry">
+                    <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=300&h=200&fit=crop" alt="نجارة">
+                    <h3>النجارة</h3>
+                    <p>نجارين مهرة لجميع الأعمال</p>
+                    <button onclick="showServiceProviders('carpentry')">عرض المقدمين</button>
+                </div>
+                
+                <div class="service-category" data-category="crafts">
+                    <img src="https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=300&h=200&fit=crop" alt="حرف">
+                    <h3>الأعمال الحرفية</h3>
+                    <p>حرفيين متخصصين</p>
+                    <button onclick="showServiceProviders('crafts')">عرض المقدمين</button>
+                </div>
+                
+                <div class="service-category" data-category="other">
+                    <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=200&fit=crop" alt="أخرى">
+                    <h3>خدمات أخرى</h3>
+                    <p>خدمات متنوعة حسب الطلب</p>
+                    <button onclick="showServiceProviders('other')">عرض المقدمين</button>
+                </div>
+            </div>
+
+            <!-- Service Providers List -->
+            <div id="providersSection" class="providers-section" style="display: none;">
+                <div class="providers-header">
+                    <h3 id="providersTitle">مقدمي الخدمة</h3>
+                    <button onclick="hideProviders()">إغلاق</button>
+                </div>
+                <div id="providersList" class="providers-list">
+                    <!-- Service providers will be populated here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Section -->
+    <section id="register" class="section">
+        <div class="container">
+            <h2>تسجيل مقدم خدمة</h2>
+            <div class="register-form">
+                <form id="serviceProviderForm">
+                    <div class="form-group">
+                        <label for="providerName">الاسم الكامل</label>
+                        <input type="text" id="providerName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="providerPhone">رقم الهاتف</label>
+                        <input type="tel" id="providerPhone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="providerEmail">البريد الإلكتروني</label>
+                        <input type="email" id="providerEmail">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="providerService">نوع الخدمة</label>
+                        <select id="providerService" required>
+                            <option value="">اختر نوع الخدمة</option>
+                            <option value="electricity">الكهرباء</option>
+                            <option value="plumbing">السباكة</option>
+                            <option value="mechanics">الميكانيكا</option>
+                            <option value="carpentry">النجارة</option>
+                            <option value="crafts">الأعمال الحرفية</option>
+                            <option value="other">أخرى</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customService">إذا اخترت "أخرى"، حدد نوع الخدمة</label>
+                        <input type="text" id="customService" placeholder="مثال: تنظيف، بستنة، طبخ...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="providerLocation">المنطقة / المدينة</label>
+                        <input type="text" id="providerLocation" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="providerExperience">سنوات الخبرة</label>
+                        <input type="number" id="providerExperience" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="providerDescription">وصف الخدمات المقدمة</label>
+                        <textarea id="providerDescription" rows="4" placeholder="اكتب وصفاً مفصلاً عن خدماتك وخبراتك..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">تسجيل</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Section -->
+    <section id="admin" class="section">
+        <div class="container">
+            <div class="admin-login" id="adminLogin">
+                <h2>تسجيل دخول الإدارة</h2>
+                <div class="login-form">
+                    <input type="password" id="adminPassword" placeholder="كلمة مرور الإدارة">
+                    <button onclick="adminLogin()">دخول</button>
+                </div>
+            </div>
+            
+            <div class="admin-panel" id="adminPanel" style="display: none;">
+                <h2>لوحة الإدارة</h2>
+                <div class="admin-controls">
+                    <button onclick="loadProviders()">تحديث قائمة المقدمين</button>
+                    <button onclick="exportData()">تصدير البيانات</button>
+                    <button onclick="adminLogout()">تسجيل خروج</button>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>إجمالي المقدمين</h3>
+                        <span id="totalProviders">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>مقدمين جدد اليوم</h3>
+                        <span id="newProvidersToday">0</span>
+                    </div>
+                </div>
+                
+                <div class="admin-providers" id="adminProviders">
+                    <!-- Admin providers list will be populated here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>منصة خدمة</h3>
+                    <p>نربط بينك وبين أفضل مقدمي الخدمات</p>
+                </div>
+                <div class="footer-section">
+                    <h3>روابط مهمة</h3>
+                    <ul>
+                        <li><a href="#" onclick="showSection('home')">الرئيسية</a></li>
+                        <li><a href="#" onclick="showSection('services')">الخدمات</a></li>
+                        <li><a href="#" onclick="showSection('register')">التسجيل</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>تواصل معنا</h3>
+                    <p>البريد الإلكتروني: mohanned20013@gmail.com </p>
+                    <p>الهاتف: 0111844691 </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 منصة خدمة. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="app.js"></script>
+    
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
 </body>
-<head>
-  <meta charset="UTF-8">
-  <title>Firebase Web + App Check</title>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js"></script>
-</head>
-<body>
-  <h1>موقعي مع Firebase</h1>
-  <div id="output"></div>
-
-  <script>
-    // ⚠️ انسخ بيانات التهيئة من Firebase Console -> Project settings -> Config
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "khidma-platform-f457.firebaseapp.com",
-      databaseURL: "https://khidma-platform-f457.firebaseio.com",
-      projectId: "khidma-platform-f457",
-      storageBucket: "khidma-platform-f457.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-
-    // ✅ تهيئة Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database(app);
-
-    // ✅ تفعيل App Check مع reCAPTCHA v3
-    const appCheck = firebase.appCheck();
-    appCheck.activate(
-      "YOUR_RECAPTCHA_SITE_KEY", // استبدلها بمفتاح reCAPTCHA من Google
-      true // للتجديد التلقائي للتوكن
-    );
-
-    // ✅ مثال: قراءة بيانات من قاعدة البيانات
-    const output = document.getElementById("output");
-    db.ref("services").on("value", (snapshot) => {
-      output.innerHTML = JSON.stringify(snapshot.val(), null, 2);
-    });
-
-    // ✅ مثال: إضافة بيانات جديدة
-    function addService() {
-      const newRef = db.ref("services").push();
-      newRef.set({
-        title: "خدمة تجريبية",
-        description: "هذه خدمة تمت إضافتها من الموقع",
-        price: 100
-      });
-    }
-
-    // تجربة الكتابة بعد 5 ثوانٍ
-    setTimeout(addService, 5000);
-  </script>
-<body>
-<head>
 </html>

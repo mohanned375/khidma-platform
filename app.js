@@ -1,239 +1,484 @@
-// قاعدة البيانات المحلية (تخزين في LocalStorage)
-const db = {
-    localDb: {
-        providers: JSON.parse(localStorage.getItem("providers")) || [],
-        settings: {
-            maxProviders: 100,
-            autoApproval: false,
-            adminCredentials: {
-                username: "admin",
-                password: "1234"
-            }
-        }
-    },
-
-    save() {
-        localStorage.setItem("providers", JSON.stringify(this.localDb.providers));
-    },
-
-    addProvider(provider) {
-        const newProvider = {
-            id: Date.now(),
-            status: this.localDb.settings.autoApproval ? "approved" : "pending",
-            ...provider
-        };
-        this.localDb.providers.push(newProvider);
-        this.save();
-        return newProvider;
-    },
-
-    updateProviderStatus(id, status) {
-        const provider = this.localDb.providers.find(p => p.id === id);
-        if (provider) {
-            provider.status = status;
-            this.save();
-        }
-    },
-
-    deleteProvider(id) {
-        this.localDb.providers = this.localDb.providers.filter(p => p.id !== id);
-        this.save();
-    }
+// Firebase Configuration
+const firebaseConfig = {
+    // Replace with your Firebase config
+    apiKey: "your-api-key",
+    authDomain: "your-project.firebaseapp.com",
+    projectId: "your-project-id",
+    storageBucket: "your-project.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "your-app-id"
 };
 
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// Global variables
+let currentProviders = [];
 let isAdminLoggedIn = false;
-let currentUser = null;
 
-// دوال إظهار الأقسام
-function hideAllSections() {
-    document.getElementById("servicesGrid").style.display = "none";
-    document.getElementById("registerSection").style.display = "none";
-    document.getElementById("providersSection").style.display = "none";
-}
-
-function showSearch() {
-    hideAllSections();
-    document.getElementById("servicesGrid").style.display = "block";
-    renderProviders();
-}
-
-function showRegisterForm() {
-    hideAllSections();
-    document.getElementById("registerSection").style.display = "block";
-}
-// عرض الخدمات
-function renderProviders(filters = {}) {
-    const container = document.getElementById("providersContainer");
-    let providers = db.localDb.providers;
-
-    // فلترة النتائج
-    if (filters.search) {
-        providers = providers.filter(p =>
-            p.name.toLowerCase().includes(filters.search.toLowerCase()) ||
-            p.location.toLowerCase().includes(filters.search.toLowerCase())
-        );
+// Navigation functions
+function showSection(sectionName) {
+    // Hide all sections
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Show selected section
+    const targetSection = document.getElementById(sectionName);
+    if (targetSection) {
+        targetSection.classList.add('active');
+        targetSection.classList.add('fade-in');
     }
-    if (filters.category) {
-        providers = providers.filter(p => p.category === filters.category);
-    }
-    if (filters.status) {
-        providers = providers.filter(p => p.status === filters.status);
-    }
-
-    // عرض النتائج
-    if (providers.length === 0) {
-        container.innerHTML = `<p style="text-align:center; color:#666;">لا توجد خدمات حالياً</p>`;
-    } else {
-        container.innerHTML = providers.map(p => `
-            <div class="provider-card">
-                <div class="provider-header">
-                    <div class="provider-info">
-                        <h4>${p.name}</h4>
-                        <p>📍 ${p.location}</p>
-                        <p>🎯 ${getCategoryName(p.category)}</p>
-                        <p>⭐ التقييم: ${p.rating || 0}/5</p>
-                        <p>📅 سنوات الخبرة: ${p.experience || 0}</p>
-                    </div>
-                    <button class="contact-btn" onclick="showContact(${p.id})">📞 تواصل معي</button>
-                </div>
-                <p style="color:#555;">${p.description || ""}</p>
-            </div>
-        `).join("");
+    
+    // Close mobile menu if open
+    closeMobileMenu();
+    
+    // Load data based on section
+    if (sectionName === 'services') {
+        loadAllProviders();
+    } else if (sectionName === 'admin' && isAdminLoggedIn) {
+        loadProviders();
     }
 }
 
-// إظهار تفاصيل التواصل
-function showContact(providerId) {
-    const provider = db.localDb.providers.find(p => p.id === providerId);
-    if (provider) {
-        document.getElementById("contactInfo").innerHTML = `
-            <h3>معلومات التواصل</h3>
-            <p><strong>الاسم:</strong> ${provider.name}</p>
-            <p><strong>الهاتف:</strong> <a href="tel:${provider.phone}">${provider.phone}</a></p>
-            ${provider.email ? `<p><strong>الإيميل:</strong> <a href="mailto:${provider.email}">${provider.email}</a></p>` : ""}
-            <p><strong>المكان:</strong> ${provider.location}</p>
-        `;
-        document.getElementById("contactModal").style.display = "block";
-    }
+function toggleMobileMenu() {
+    const navMenu = document.querySelector('.nav-menu');
+    navMenu.classList.toggle('active');
 }
 
-function closeContactModal() {
-    document.getElementById("contactModal").style.display = "none";
+function closeMobileMenu() {
+    const navMenu = document.querySelector('.nav-menu');
+    navMenu.classList.remove('active');
 }
-// تسجيل الدخول كأدمن
-document.getElementById("loginForm").addEventListener("submit", function (e) {
+
+// Service provider registration
+document.getElementById('serviceProviderForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const username = document.getElementById("adminUsername").value;
-    const password = document.getElementById("adminPassword").value;
-
-    if (
-        username === db.settings.adminCredentials.username &&
-        password === db.settings.adminCredentials.password
-    ) {
-        isAdminLoggedIn = true;
-        currentUser = { username, role: "admin" };
-        showNotification("تم تسجيل الدخول بنجاح 🎉", "success");
-        showAdminPanel();
-    } else {
-        showNotification("اسم المستخدم أو كلمة المرور غير صحيحة ❌", "error");
-    }
-});
-
-// تسجيل مقدم خدمة
-document.getElementById("registerForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-
+    
     const formData = {
-        name: document.getElementById("providerName").value,
-        phone: document.getElementById("providerPhone").value,
-        email: document.getElementById("providerEmail").value,
-        category: document.getElementById("providerCategory").value,
-        location: document.getElementById("providerLocation").value,
-        experience: parseInt(document.getElementById("providerExperience").value),
-        description: document.getElementById("providerDescription").value
+        name: document.getElementById('providerName').value,
+        phone: document.getElementById('providerPhone').value,
+        email: document.getElementById('providerEmail').value,
+        service: document.getElementById('providerService').value,
+        customService: document.getElementById('customService').value,
+        location: document.getElementById('providerLocation').value,
+        experience: parseInt(document.getElementById('providerExperience').value) || 0,
+        description: document.getElementById('providerDescription').value,
+        registrationDate: new Date().toISOString(),
+        approved: true // Auto-approve for now
     };
-
-    // التحقق من صحة البيانات
-    if (!formData.name || !formData.phone || !formData.category || !formData.location) {
-        showNotification("يرجى ملء جميع الحقول المطلوبة", "error");
-        return;
+    
+    try {
+        // Add to Firestore
+        await db.collection('serviceProviders').add(formData);
+        
+        showNotification('تم التسجيل بنجاح! سيتم مراجعة بياناتك قريباً.', 'success');
+        document.getElementById('serviceProviderForm').reset();
+        
+        // Show services section after successful registration
+        setTimeout(() => {
+            showSection('services');
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Error adding document: ', error);
+        showNotification('حدث خطأ أثناء التسجيل. يرجى المحاولة مرة أخرى.', 'error');
     }
+});
 
-    const phoneRegex = /^(05|01)[0-9]{8}$/;
-    if (!phoneRegex.test(formData.phone)) {
-        showNotification("رقم الهاتف غير صحيح", "error");
-        return;
-    }
-
-    const exists = db.localDb.providers.find(p => p.phone === formData.phone);
-    if (exists) {
-        showNotification("رقم الهاتف مسجل مسبقاً", "error");
-        return;
-    }
-
-    db.addProvider(formData);
-
-    if (db.localDb.settings.autoApproval) {
-        showNotification("تم تسجيلك بنجاح ✅", "success");
+// Show/hide custom service field
+document.getElementById('providerService').addEventListener('change', function() {
+    const customServiceField = document.getElementById('customService').parentElement;
+    if (this.value === 'other') {
+        customServiceField.style.display = 'block';
+        document.getElementById('customService').required = true;
     } else {
-        showNotification("تم تسجيلك وسيتم المراجعة قريباً ⏳", "success");
-    }
-
-    this.reset();
-    showSearch();
-});
-// البحث بالإنتر
-document.getElementById("searchInput").addEventListener("keypress", function (e) {
-    if (e.key === "Enter") {
-        searchServices();
+        customServiceField.style.display = 'none';
+        document.getElementById('customService').required = false;
     }
 });
 
-// إغلاق نافذة التواصل عند الضغط بالخارج
-window.onclick = function (event) {
-    const modal = document.getElementById("contactModal");
-    if (event.target == modal) {
-        modal.style.display = "none";
+// Search functionality
+function searchServices() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const serviceCategories = document.querySelectorAll('.service-category');
+    
+    serviceCategories.forEach(category => {
+        const categoryName = category.querySelector('h3').textContent.toLowerCase();
+        const categoryDescription = category.querySelector('p').textContent.toLowerCase();
+        
+        if (categoryName.includes(searchTerm) || categoryDescription.includes(searchTerm)) {
+            category.style.display = 'block';
+            category.classList.add('fade-in');
+        } else {
+            category.style.display = 'none';
+        }
+    });
+    
+    // Also search in current providers
+    if (currentProviders.length > 0) {
+        const filteredProviders = currentProviders.filter(provider => 
+            provider.name.toLowerCase().includes(searchTerm) ||
+            provider.service.toLowerCase().includes(searchTerm) ||
+            (provider.customService && provider.customService.toLowerCase().includes(searchTerm)) ||
+            provider.location.toLowerCase().includes(searchTerm)
+        );
+        displayProviders(filteredProviders, 'نتائج البحث');
     }
-};
-
-// تشغيل التطبيق عند الفتح
-window.onload = function () {
-    showSearch();
-    updateDashboard();
-    registerServiceWorker();
-    enableSecretAdminAccess();
-    checkStoredAdminAccess();
-    checkAdminAccess();
-
-    setTimeout(() => {
-        if (db.localDb.providers.length === 0) {
-            showNotification("مرحباً! التطبيق جاهز لاستقبال مقدمي الخدمات 🚀", "success");
-        }
-    }, 2000);
-
-    setTimeout(() => {
-        if (!window.matchMedia("(display-mode: standalone)").matches) {
-            showInstallButton();
-        }
-    }, 30000);
-
-    setInterval(updateSyncStatus, 10000);
-};
-
-// إضافة تعليمات التثبيت
-function addInstallInstructions() {
-    const hero = document.querySelector(".hero");
-    const installInfo = document.createElement("div");
-    installInfo.style.marginTop = "2rem";
-    installInfo.innerHTML = `
-        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; backdrop-filter: blur(10px);">
-            <p style="margin-bottom: 0.5rem; font-weight: bold;">📱 متاح كتطبيق للهواتف الذكية</p>
-            <button class="btn btn-secondary" onclick="showAPKInstructions()" style="font-size: 0.9rem;">طريقة التثبيت</button>
-        </div>
-    `;
-    hero.appendChild(installInfo);
 }
 
-setTimeout(addInstallInstructions, 1000);
+// Load all providers for search
+async function loadAllProviders() {
+    try {
+        const querySnapshot = await db.collection('serviceProviders')
+            .where('approved', '==', true)
+            .get();
+        
+        currentProviders = [];
+        querySnapshot.forEach((doc) => {
+            currentProviders.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+    } catch (error) {
+        console.error('Error loading providers: ', error);
+    }
+}
 
+// Show service providers by category
+async function showServiceProviders(category) {
+    try {
+        let query = db.collection('serviceProviders').where('approved', '==', true);
+        
+        if (category !== 'all') {
+            query = query.where('service', '==', category);
+        }
+        
+        const querySnapshot = await query.get();
+        const providers = [];
+        
+        querySnapshot.forEach((doc) => {
+            providers.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+        
+        const categoryNames = {
+            'electricity': 'الكهرباء',
+            'plumbing': 'السباكة',
+            'mechanics': 'الميكانيكا',
+            'carpentry': 'النجارة',
+            'crafts': 'الأعمال الحرفية',
+            'other': 'خدمات أخرى'
+        };
+        
+        const title = categoryNames[category] || 'جميع الخدمات';
+        displayProviders(providers, `مقدمو خدمة ${title}`);
+        
+    } catch (error) {
+        console.error('Error loading providers: ', error);
+        showNotification('حدث خطأ في تحميل البيانات', 'error');
+    }
+}
+
+// Display providers
+function displayProviders(providers, title) {
+    const providersSection = document.getElementById('providersSection');
+    const providersTitle = document.getElementById('providersTitle');
+    const providersList = document.getElementById('providersList');
+    
+    providersTitle.textContent = title;
+    providersList.innerHTML = '';
+    
+    if (providers.length === 0) {
+        providersList.innerHTML = '<p style="text-align: center; color: #666;">لا توجد خدمات متاحة في هذه الفئة حالياً</p>';
+    } else {
+        providers.forEach(provider => {
+            const providerCard = createProviderCard(provider, false);
+            providersList.appendChild(providerCard);
+        });
+    }
+    
+    providersSection.style.display = 'block';
+    providersSection.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Create provider card
+function createProviderCard(provider, isAdmin = false) {
+    const card = document.createElement('div');
+    card.className = isAdmin ? 'admin-provider-card' : 'provider-card';
+    
+    const serviceDisplay = provider.service === 'other' && provider.customService 
+        ? provider.customService 
+        : getServiceName(provider.service);
+    
+    const registrationDate = provider.registrationDate 
+        ? new Date(provider.registrationDate).toLocaleDateString('ar-SA')
+        : 'غير محدد';
+    
+    if (isAdmin) {
+        card.innerHTML = `
+            <div class="admin-provider-info">
+                <h4>${provider.name}</h4>
+                <p class="provider-info"><strong>الخدمة:</strong> ${serviceDisplay}</p>
+                <p class="provider-info"><strong>الهاتف:</strong> ${provider.phone}</p>
+                <p class="provider-info"><strong>المنطقة:</strong> ${provider.location}</p>
+                <p class="provider-info"><strong>تاريخ التسجيل:</strong> ${registrationDate}</p>
+                <p class="provider-info"><strong>الحالة:</strong> ${provider.approved ? 'مفعل' : 'في انتظار المراجعة'}</p>
+            </div>
+            <div class="admin-provider-actions">
+                <button class="edit-btn" onclick="editProvider('${provider.id}')">تعديل</button>
+                <button class="delete-btn" onclick="deleteProvider('${provider.id}')">حذف</button>
+                <button class="${provider.approved ? 'delete-btn' : 'edit-btn'}" onclick="toggleProviderStatus('${provider.id}', ${!provider.approved})">
+                    ${provider.approved ? 'إلغاء تفعيل' : 'تفعيل'}
+                </button>
+            </div>
+        `;
+    } else {
+        card.innerHTML = `
+            <h4>${provider.name}</h4>
+            <p class="provider-info"><strong>الخدمة:</strong> ${serviceDisplay}</p>
+            <p class="provider-info"><strong>المنطقة:</strong> ${provider.location}</p>
+            <p class="provider-info"><strong>سنوات الخبرة:</strong> ${provider.experience} سنة</p>
+            ${provider.description ? `<p class="provider-info"><strong>الوصف:</strong> ${provider.description}</p>` : ''}
+            <div class="provider-actions">
+                <a href="tel:${provider.phone}" class="call-btn">اتصال ${provider.phone}</a>
+                ${provider.email ? `<button class="contact-btn" onclick="contactProvider('${provider.email}')">مراسلة</button>` : ''}
+            </div>
+        `;
+    }
+    
+    return card;
+}
+
+// Get service name in Arabic
+function getServiceName(service) {
+    const serviceNames = {
+        'electricity': 'الكهرباء',
+        'plumbing': 'السباكة',
+        'mechanics': 'الميكانيكا',
+        'carpentry': 'النجارة',
+        'crafts': 'الأعمال الحرفية',
+        'other': 'خدمات أخرى'
+    };
+    return serviceNames[service] || service;
+}
+
+// Contact provider
+function contactProvider(email) {
+    window.open(`mailto:${email}?subject=استفسار عن خدماتكم&body=مرحباً، أود الاستفسار عن خدماتكم.`);
+}
+
+// Hide providers section
+function hideProviders() {
+    document.getElementById('providersSection').style.display = 'none';
+}
+
+// Admin functions
+function adminLogin() {
+    const password = document.getElementById('adminPassword').value;
+    const correctPassword = 'admin123'; // Change this to a secure password
+    
+    if (password === correctPassword) {
+        isAdminLoggedIn = true;
+        document.getElementById('adminLogin').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        loadProviders();
+        showNotification('تم تسجيل الدخول بنجاح', 'success');
+    } else {
+        showNotification('كلمة المرور غير صحيحة', 'error');
+    }
+}
+
+function adminLogout() {
+    isAdminLoggedIn = false;
+    document.getElementById('adminLogin').style.display = 'block';
+    document.getElementById('adminPanel').style.display = 'none';
+    document.getElementById('adminPassword').value = '';
+    showNotification('تم تسجيل الخروج', 'success');
+}
+
+// Load providers for admin
+async function loadProviders() {
+    if (!isAdminLoggedIn) return;
+    
+    try {
+        const querySnapshot = await db.collection('serviceProviders').get();
+        const providers = [];
+        
+        querySnapshot.forEach((doc) => {
+            providers.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+        
+        // Update stats
+        const today = new Date().toDateString();
+        const newToday = providers.filter(p => 
+            p.registrationDate && new Date(p.registrationDate).toDateString() === today
+        ).length;
+        
+        document.getElementById('totalProviders').textContent = providers.length;
+        document.getElementById('newProvidersToday').textContent = newToday;
+        
+        // Display providers
+        const adminProviders = document.getElementById('adminProviders');
+        adminProviders.innerHTML = '<h3>قائمة مقدمي الخدمات</h3>';
+        
+        if (providers.length === 0) {
+            adminProviders.innerHTML += '<p>لا توجد مقدمي خدمات مسجلين حتى الآن</p>';
+        } else {
+            providers.forEach(provider => {
+                const providerCard = createProviderCard(provider, true);
+                adminProviders.appendChild(providerCard);
+            });
+        }
+        
+    } catch (error) {
+        console.error('Error loading providers: ', error);
+        showNotification('حدث خطأ في تحميل البيانات', 'error');
+    }
+}
+
+// Toggle provider status
+async function toggleProviderStatus(providerId, newStatus) {
+    try {
+        await db.collection('serviceProviders').doc(providerId).update({
+            approved: newStatus
+        });
+        
+        showNotification(`تم ${newStatus ? 'تفعيل' : 'إلغاء تفعيل'} مقدم الخدمة`, 'success');
+        loadProviders(); // Reload the list
+        
+    } catch (error) {
+        console.error('Error updating provider: ', error);
+        showNotification('حدث خطأ في التحديث', 'error');
+    }
+}
+
+// Delete provider
+async function deleteProvider(providerId) {
+    if (confirm('هل أنت متأكد من حذف هذا المقدم؟')) {
+        try {
+            await db.collection('serviceProviders').doc(providerId).delete();
+            showNotification('تم حذف مقدم الخدمة', 'success');
+            loadProviders(); // Reload the list
+            
+        } catch (error) {
+            console.error('Error deleting provider: ', error);
+            showNotification('حدث خطأ في الحذف', 'error');
+        }
+    }
+}
+
+// Edit provider (placeholder function)
+function editProvider(providerId) {
+    showNotification('ميزة التعديل قيد التطوير', 'info');
+}
+
+// Export data
+async function exportData() {
+    try {
+        const querySnapshot = await db.collection('serviceProviders').get();
+        const providers = [];
+        
+        querySnapshot.forEach((doc) => {
+            providers.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+        
+        const dataStr = JSON.stringify(providers, null, 2);
+        const dataBlob = new Blob([dataStr], {type: 'application/json'});
+        const url = URL.createObjectURL(dataBlob);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `service_providers_${new Date().toISOString().split('T')[0]}.json`;
+        link.click();
+        
+        showNotification('تم تصدير البيانات بنجاح', 'success');
+        
+    } catch (error) {
+        console.error('Error exporting data: ', error);
+        showNotification('حدث خطأ في تصدير البيانات', 'error');
+    }
+}
+
+// Notification system
+function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    notification.classList.add('show');
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 4000);
+}
+
+// Initialize app
+document.addEventListener('DOMContentLoaded', function() {
+    // Show home section by default
+    showSection('home');
+    
+    // Load all providers for search functionality
+    loadAllProviders();
+    
+    // Add event listeners
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            searchServices();
+        }
+    });
+    
+    // Handle service selection change
+    const serviceSelect = document.getElementById('providerService');
+    if (serviceSelect) {
+        serviceSelect.dispatchEvent(new Event('change'));
+    }
+});
+
+// Handle online/offline status
+window.addEventListener('online', function() {
+    showNotification('تم استعادة الاتصال بالإنترنت', 'success');
+});
+
+window.addEventListener('offline', function() {
+    showNotification('لا يوجد اتصال بالإنترنت', 'error');
+});
+
+// Handle form validation
+function validateForm(form) {
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            field.style.borderColor = '#f44336';
+            isValid = false;
+        } else {
+            field.style.borderColor = '#ddd';
+        }
+    });
+    
+    return isValid;
+}
+
+// Phone number validation
+function validatePhoneNumber(phone) {
+    const phoneRegex = /^(\+966|0)?[5][0-9]{8}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+}
+
+// Email validation
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
