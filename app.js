@@ -482,3 +482,19 @@ function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const menuBtn = document.getElementById("menuToggle");
+  const menuList = document.getElementById("menuList");
+
+  if (menuBtn && menuList) {
+    menuBtn.addEventListener("click", () => {
+      if (menuList.style.display === "none" || menuList.style.display === "") {
+        menuList.style.display = "block";
+      } else {
+        menuList.style.display = "none";
+      }
+    });
+  }
+});
+</script>
