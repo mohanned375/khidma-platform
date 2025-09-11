@@ -281,20 +281,25 @@
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
     <script src="app.js"></script>
-    
-    <script>
-        // Register Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then((registration) => {
-                        console.log('SW registered: ', registration);
-                    })
-                    .catch((registrationError) => {
-                        console.log('SW registration failed: ', registrationError);
-                    });
-            });
-        }
-    </script>
+	<button id="menu-toggle">☰ القائمة</button>
+
+<nav id="menu" style="display: none;">
+  <ul>
+    <li><a href="#">الرئيسية</a></li>
+    <li><a href="#">خدماتنا</a></li>
+    <li><a href="#">اتصل بنا</a></li>
+  </ul>
+</nav>
+	<script>
+  document.getElementById("menu-toggle").addEventListener("click", function () {
+    var menu = document.getElementById("menu");
+    if (menu.style.display === "none" || menu.style.display === "") {
+      menu.style.display = "block";
+    } else {
+      menu.style.display = "none";
+    }
+  });
+	</script>
 </body>
 </html>
+
