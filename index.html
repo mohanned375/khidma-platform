@@ -276,30 +276,91 @@
 
     <!-- Notification -->
     <div id="notification" class="notification"></div>
-
-    <!-- Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
-    <script src="app.js"></script>
-	<button id="menu-toggle">☰ القائمة</button>
-
-<nav id="menu" style="display: none;">
-  <ul>
-    <li><a href="#">الرئيسية</a></li>
-    <li><a href="#">خدماتنا</a></li>
-    <li><a href="#">اتصل بنا</a></li>
-  </ul>
-</nav>
-	<script>
-  document.getElementById("menu-toggle").addEventListener("click", function () {
-    var menu = document.getElementById("menu");
-    if (menu.style.display === "none" || menu.style.display === "") {
-      menu.style.display = "block";
-    } else {
-      menu.style.display = "none";
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>قائمة علوية</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      direction: rtl;
+      margin: 0;
+      padding: 0;
     }
-  });
-	</script>
+
+    /* زر القائمة */
+    #menu-toggle {
+      background: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    /* القائمة */
+    #menu {
+      display: none;
+      position: absolute; /* لتثبيت القائمة */
+      top: 50px;          /* المسافة من الأعلى */
+      left: 10px;         /* المسافة من اليسار */
+      background: #f3f3f3;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      width: 200px;
+    }
+
+    #menu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #menu ul li {
+      margin: 8px 0;
+    }
+
+    #menu ul li a {
+      text-decoration: none;
+      color: #333;
+      display: block;
+      padding: 5px;
+    }
+
+    #menu ul li a:hover {
+      background: #007bff;
+      color: white;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="menu-toggle">☰ القائمة</button>
+
+  <nav id="menu">
+    <ul>
+      <li><a href="#">الرئيسية</a></li>
+      <li><a href="#">خدماتنا</a></li>
+      <li><a href="#">من نحن</a></li>
+      <li><a href="#">اتصل بنا</a></li>
+    </ul>
+  </nav>
+
+  <script>
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+      var menu = document.getElementById("menu");
+      if (menu.style.display === "none" || menu.style.display === "") {
+        menu.style.display = "block";
+      } else {
+        menu.style.display = "none";
+      }
+    });
+  </script>
+
 </body>
 </html>
+
 
