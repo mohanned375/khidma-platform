@@ -15,16 +15,20 @@
         <div class="container">
             <div class="nav-content">
                 <div class="logo"><img src="https://mohanned375.github.io/khidma/images/icon.png" alt="شعار منصة خدمة"> منصة خدمة</div>
+                
                 <ul class="nav-menu" id="navMenu">
                     <li><a href="#home">الرئيسية</a></li>
                     <li><a href="#services">الخدمات</a></li>
                     <li><a href="#contact">اتصل بنا</a></li>
                 </ul>
-                <div class="nav-buttons">
-                    <button class="btn btn-primary" onclick="openModal('registerModal')"><i class="fas fa-user-plus"></i> <span>تسجيل</span></button>
-                    <button class="btn btn-secondary" onclick="openModal('searchModal')"><i class="fas fa-search"></i> <span>البحث</span></button>
+
+                <div class="nav-right-section">
+                    <div class="nav-buttons">
+                        <button class="btn btn-primary" onclick="openModal('registerModal')"><i class="fas fa-user-plus"></i> <span>تسجيل</span></button>
+                        <button class="btn btn-secondary" onclick="openModal('searchModal')"><i class="fas fa-search"></i> <span>البحث</span></button>
+                    </div>
+                    <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
                 </div>
-                <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
             </div>
         </div>
     </nav>
@@ -46,30 +50,12 @@
         <div class="container">
             <h2 class="section-title">تصفح الخدمات</h2>
             <div class="services-grid">
-                <div class="service-card" onclick="searchByCategory('بناء')">
-                    <div class="service-card-image-wrapper"><img src="https://mohanned375.github.io/khidma/images/building.png" alt="خدمات البناء"></div>
-                    <div class="service-card-header"><h3>خدمات البناء</h3></div>
-                </div>
-                <div class="service-card" onclick="searchByCategory('كهرباء')">
-                    <div class="service-card-image-wrapper"><img src="https://mohanned375.github.io/khidma/images/electricity.png" alt="خدمات الكهرباء"></div>
-                    <div class="service-card-header"><h3>خدمات الكهرباء</h3></div>
-                </div>
-                <div class="service-card" onclick="searchByCategory('سباكة')">
-                    <div class="service-card-image-wrapper"><img src="https://mohanned375.github.io/khidma/images/plumbing.png" alt="خدمات السباكة"></div>
-                    <div class="service-card-header"><h3>خدمات السباكة</h3></div>
-                </div>
-                <div class="service-card" onclick="searchByCategory('ميكانيكا')">
-                    <div class="service-card-image-wrapper"><img src="https://mohanned375.github.io/khidma/images/mechanics.png" alt="خدمات الميكانيكا"></div>
-                    <div class="service-card-header"><h3>خدمات الميكانيكا</h3></div>
-                </div>
-                <div class="service-card" onclick="searchByCategory('نجارة')">
-                    <div class="service-card-image-wrapper"><img src="https://mohanned375.github.io/khidma/images/carpentry.png" alt="خدمات النجارة"></div>
-                    <div class="service-card-header"><h3>خدمات النجارة</h3></div>
-                </div>
-                <div class="service-card" onclick="openModal('otherServiceModal')">
-                    <div class="service-card-image-wrapper"><img src="https://mohanned375.github.io/khidma/images/other services.png" alt="خدمات أخرى"></div>
-                    <div class="service-card-header"><h3>خدمات أخرى</h3></div>
-                </div>
+                <div class="service-card" onclick="searchByCategory('بناء')"><div class="service-card-image-wrapper"><img src="https://mohanned375.github.io/khidma/images/building.png" alt="خدمات البناء"></div><div class="service-card-header"><h3>خدمات البناء</h3></div></div>
+                <div class="service-card" onclick="searchByCategory('كهرباء')"><div class="service-card-image-wrapper"><img src="https://mohanned375.github.io/khidma/images/electricity.png" alt="خدمات الكهرباء"></div><div class="service-card-header"><h3>خدمات الكهرباء</h3></div></div>
+                <div class="service-card" onclick="searchByCategory('سباكة')"><div class="service-card-image-wrapper"><img src="https://mohanned375.github.io/khidma/images/plumbing.png" alt="خدمات السباكة"></div><div class="service-card-header"><h3>خدمات السباكة</h3></div></div>
+                <div class="service-card" onclick="searchByCategory('ميكانيكا')"><div class="service-card-image-wrapper"><img src="https://mohanned375.github.io/khidma/images/mechanics.png" alt="خدمات الميكانيكا"></div><div class="service-card-header"><h3>خدمات الميكانيكا</h3></div></div>
+                <div class="service-card" onclick="searchByCategory('نجارة')"><div class="service-card-image-wrapper"><img src="https://mohanned375.github.io/khidma/images/carpentry.png" alt="خدمات النجارة"></div><div class="service-card-header"><h3>خدمات النجارة</h3></div></div>
+                <div class="service-card" onclick="openModal('otherServiceModal')"><div class="service-card-image-wrapper"><img src="https://mohanned375.github.io/khidma/images/other services.png" alt="خدمات أخرى"></div><div class="service-card-header"><h3>خدمات أخرى</h3></div></div>
             </div>
         </div>
     </section>
@@ -79,75 +65,38 @@
         <div class="container">
             <h2 class="section-title">منشورات المجتمع</h2>
             <div class="add-post-container"><button class="btn btn-primary" onclick="openModal('addPostModal')"><i class="fas fa-plus"></i> إضافة منشور جديد</button></div>
-            <div class="posts-container" id="postsContainer">
-                <div class="posts-list" id="postsList">
-                    <div class="no-posts-message" id="noPostsMessage"><i class="fas fa-comments"></i><p>لا توجد منشورات حتى الآن.</p></div>
-                </div>
-            </div>
+            <div class="posts-container" id="postsContainer"><div class="posts-list" id="postsList"><div class="no-posts-message" id="noPostsMessage"><i class="fas fa-comments"></i><p>لا توجد منشورات حتى الآن.</p></div></div></div>
         </div>
     </section>
 
     <!-- قسم نتائج البحث -->
     <section class="search-results" id="searchResults" style="display: none;">
+        <div class="container"><h2 class="section-title">نتائج البحث</h2><div class="loading" id="loading" style="display: none;"></div><div class="providers-list" id="providersList"></div></div>
+    </section>
+
+    <!-- قسم المميزات (تمت إعادته) -->
+    <section class="features" id="about">
         <div class="container">
-            <h2 class="section-title">نتائج البحث</h2>
-            <div class="loading" id="loading" style="display: none;"></div>
-            <div class="providers-list" id="providersList"></div>
+            <h2 class="section-title">لماذا تختار منصة خدمة؟</h2>
+            <div class="features-grid">
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-users"></i></div><h3>سهولة التواصل</h3><p>تواصل مباشر مع مقدمي الخدمات</p></div>
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3>موثوقية عالية</h3><p>مقدمو خدمات مسجلون ومعتمدون</p></div>
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-clock"></i></div><h3>توفير الوقت</h3><p>اعثر على الخدمة في دقائق</p></div>
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-money-bill-wave"></i></div><h3>مجاني تماماً</h3><p>استخدام المنصة مجاني للجميع</p></div>
+            </div>
         </div>
     </section>
 
     <!-- التذييل -->
     <footer class="footer" id="contact">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section"><h3>منصة خدمة</h3><p>نربط بين العملاء ومقدمي الخدمات لتسهيل الحصول على الخدمات.</p></div>
-                <div class="footer-section"><h3>روابط سريعة</h3><ul><li><a href="#home">الرئيسية</a></li><li><a href="#services">الخدمات</a></li></ul></div>
-                <div class="footer-section"><h3>تواصل معنا</h3><ul><li><i class="fas fa-envelope"></i> <a href="mailto:mohanned20013@gmail.com">mohanned20013@gmail.com</a></li></ul></div>
-            </div>
+            <div class="footer-content"><div class="footer-section"><h3>منصة خدمة</h3><p>نربط بين العملاء ومقدمي الخدمات لتسهيل الحصول على الخدمات.</p></div><div class="footer-section"><h3>روابط سريعة</h3><ul><li><a href="#home">الرئيسية</a></li><li><a href="#services">الخدمات</a></li></ul></div><div class="footer-section"><h3>تواصل معنا</h3><ul><li><i class="fas fa-envelope"></i> <a href="mailto:mohanned20013@gmail.com">mohanned20013@gmail.com</a></li></ul></div></div>
             <div class="footer-bottom"><p>&copy; 2025 منصة خدمة. جميع الحقوق محفوظة.</p></div>
         </div>
     </footer>
 
     <!-- النماذج المنبثقة (Modals) -->
-    <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('registerModal')">&times;</span>
-            <h2>تسجيل مقدم خدمة</h2>
-            <form id="registerForm">
-                <div class="form-group"><label for="providerName">الاسم الكامل:</label><input type="text" id="providerName" required></div>
-                <div class="form-group">
-                    <label for="providerPhone">رقم الهاتف:</label>
-                    <div class="phone-input-group">
-                        <select id="countryCode">
-                            <option value="963">+963 (سوريا)</option>
-                            <option value="966">+966 (السعودية)</option>
-                            <option value="971">+971 (الإمارات)</option>
-                            <option value="20">+20 (مصر)</option>
-                            <option value="962">+962 (الأردن)</option>
-                            <option value="961">+961 (لبنان)</option>
-                            <option value="970">+970 (فلسطين)</option>
-                            <option value="965">+965 (الكويت)</option>
-                            <option value="974">+974 (قطر)</option>
-                            <option value="973">+973 (البحرين)</option>
-                            <option value="968">+968 (عمان)</option>
-                            <option value="967">+967 (اليمن)</option>
-                            <option value="218">+218 (ليبيا)</option>
-                            <option value="212">+212 (المغرب)</option>
-                            <option value="213">+213 (الجزائر)</option>
-                            <option value="216">+216 (تونس)</option>
-                            <option value="249">+249 (السودان)</option>
-                        </select>
-                        <input type="tel" id="providerPhone" required placeholder="أدخل الرقم بدون الصفر">
-                    </div>
-                </div>
-                <div class="form-group"><label for="providerService">نوع الخدمة:</label><select id="providerService" required><option value="">اختر الخدمة</option><option value="بناء">بناء</option><option value="كهرباء">كهرباء</option><option value="سباكة">سباكة</option><option value="ميكانيكا">ميكانيكا</option><option value="نجارة">نجارة</option><option value="أخرى">أخرى</option></select></div>
-                <div class="form-group" id="otherServiceGroup" style="display: none;"><label for="otherService">حدد الخدمة:</label><input type="text" id="otherService"></div>
-                <div class="form-group"><label for="providerCity">المدينة:</label><input type="text" id="providerCity" required></div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">تسجيل</button>
-            </form>
-            <div id="registerSuccess" class="alert alert-success" style="display:none;">تم التسجيل بنجاح!</div>
-        </div>
-    </div>
+    <div id="registerModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('registerModal')">&times;</span><h2>تسجيل مقدم خدمة</h2><form id="registerForm"><div class="form-group"><label for="providerName">الاسم الكامل:</label><input type="text" id="providerName" required></div><div class="form-group"><label for="providerPhone">رقم الهاتف:</label><div class="phone-input-group"><select id="countryCode"><option value="963">+963 (سوريا)</option><option value="966">+966 (السعودية)</option><option value="971">+971 (الإمارات)</option><option value="20">+20 (مصر)</option><option value="962">+962 (الأردن)</option><option value="961">+961 (لبنان)</option><option value="970">+970 (فلسطين)</option><option value="965">+965 (الكويت)</option><option value="974">+974 (قطر)</option><option value="973">+973 (البحرين)</option><option value="968">+968 (عمان)</option><option value="967">+967 (اليمن)</option><option value="218">+218 (ليبيا)</option><option value="212">+212 (المغرب)</option><option value="213">+213 (الجزائر)</option><option value="216">+216 (تونس)</option><option value="249">+249 (السودان)</option></select><input type="tel" id="providerPhone" required placeholder="أدخل الرقم بدون الصفر"></div></div><div class="form-group"><label for="providerService">نوع الخدمة:</label><select id="providerService" required><option value="">اختر الخدمة</option><option value="بناء">بناء</option><option value="كهرباء">كهرباء</option><option value="سباكة">سباكة</option><option value="ميكانيكا">ميكانيكا</option><option value="نجارة">نجارة</option><option value="أخرى">أخرى</option></select></div><div class="form-group" id="otherServiceGroup" style="display: none;"><label for="otherService">حدد الخدمة:</label><input type="text" id="otherService"></div><div class="form-group"><label for="providerCity">المدينة:</label><input type="text" id="providerCity" required></div><button type="submit" class="btn btn-primary" style="width:100%;">تسجيل</button></form><div id="registerSuccess" class="alert alert-success" style="display:none;">تم التسجيل بنجاح!</div></div></div>
     <div id="searchModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('searchModal')">&times;</span><h2>بحث متقدم</h2><form id="advancedSearchForm"><div class="form-group"><label for="searchService">نوع الخدمة:</label><select id="searchService"><option value="">الكل</option><option value="بناء">بناء</option><option value="كهرباء">كهرباء</option></select></div><div class="form-group"><label for="searchCity">المدينة:</label><input type="text" id="searchCity"></div><button type="submit" class="btn btn-primary" style="width:100%;">بحث</button></form></div></div>
     <div id="addPostModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('addPostModal')">&times;</span><h2>إضافة منشور</h2><form id="addPostForm"><div class="form-group"><label for="postAuthor">اسمك:</label><input type="text" id="postAuthor" required></div><div class="form-group"><label for="postTitle">العنوان:</label><input type="text" id="postTitle" required></div><div class="form-group"><label for="postContent">المحتوى:</label><textarea id="postContent" rows="4" required></textarea></div><button type="submit" class="btn btn-primary" style="width:100%;">نشر</button></form><div id="postSuccess" class="alert alert-success" style="display:none;">تم النشر بنجاح!</div></div></div>
     <div id="otherServiceModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('otherServiceModal')">&times;</span><h2>خدمة أخرى</h2><form id="otherServiceSearchForm"><div class="form-group"><label for="customService">اكتب الخدمة:</label><input type="text" id="customService" required></div><button type="submit" class="btn btn-primary" style="width:100%;">بحث</button></form></div></div>
