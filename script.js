@@ -4,18 +4,29 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 // ========================================================
-// --- دوال عامة قابلة للاستدعاء من HTML (onclick) ---
+// --- دوال عامة (يجب أن تكون هنا لتعمل onclick) ---
 // ========================================================
 
-function toggleMenu() { document.getElementById('navMenu').classList.toggle('active'); }
-function openModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.style.display = 'flex'; }
-function closeModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.style.display = 'none'; }
-function openRegisterModal() { openModal('registerModal'); }
-function openSearchModal() { openModal('searchModal'); }
-function openAddPostModal() { openModal('addPostModal'); }
+function toggleMenu() {
+    document.getElementById('navMenu').classList.toggle('active');
+}
+
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.style.display = 'none';
+}
+
+function searchByCategory(category) {
+    searchProviders({ service: category });
+}
 
 // ========================================================
-// --- دوال البحث (مع أزرار الاتصال) ---
+// --- دوال البحث وعرض النتائج ---
 // ========================================================
 
 async function searchProviders(filters = {}) {
@@ -25,25 +36,24 @@ async function searchProviders(filters = {}) {
 
     resultsSection.style.display = 'block';
     loading.style.display = 'block';
+    loading.textContent = 'جاري البحث...';
     providersList.innerHTML = '';
     window.scrollTo({ top: resultsSection.offsetTop - 70, behavior: 'smooth' });
 
     let query = supabase.from('providers').select('*').eq('is_approved', true);
 
     if (filters.service) query = query.eq('service', filters.service);
-    if (filters.keyword) query = query.or(`name.ilike.%${filters.keyword}%,description.ilike.%${filters.keyword}%,service.ilike.%${filters.keyword}%`);
+    if (filters.keyword) query = query.or(`name.ilike.%${filters.keyword}%,service.ilike.%${filters.keyword}%`);
 
     const { data, error } = await query;
     loading.style.display = 'none';
 
     if (error) {
         providersList.innerHTML = '<p>حدث خطأ أثناء البحث.</p>';
-        console.error(error);
     } else if (data.length === 0) {
         providersList.innerHTML = '<p>لا توجد نتائج تطابق بحثك.</p>';
     } else {
         data.forEach(provider => {
-            // الرقم الكامل للواتساب (مفتاح الدولة + الرقم)
             const fullPhoneNumber = provider.phone;
             providersList.innerHTML += `
                 <div class="provider-card">
@@ -60,8 +70,6 @@ async function searchProviders(filters = {}) {
     }
 }
 
-function searchByCategory(category) { searchProviders({ service: category }); }
-
 // ========================================================
 // --- دوال المنشورات ---
 // ========================================================
@@ -75,7 +83,6 @@ async function loadPosts() {
     if (error || !data || data.length === 0) {
         postsList.innerHTML = '';
         noPostsMessage.style.display = 'block';
-        if(error) console.error('Error loading posts:', error);
         return;
     }
     
@@ -93,39 +100,79 @@ async function loadPosts() {
 }
 
 // ========================================================
-// --- ربط الأحداث عند تحميل الصفحة ---
+// --- ربط الأحداث التي لا تحتاج إلى onclick ---
 // ========================================================
 
 document.addEventListener('DOMContentLoaded', () => {
     loadPosts();
 
-    document.querySelector('.search-container .search-btn').addEventListener('click', () => {
+    // --- ربط نماذج الإرسال (Submit) ---
+    document.getElementById('mainSearchBtn').addEventListener('click', () => {
         const query = document.getElementById('mainSearch').value;
         if (query) searchProviders({ keyword: query });
     });
 
     document.getElementById('advancedSearchForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        const filters = { service: document.getElementById('searchService').value, city: document.getElementById('searchCity').value };
-        searchProviders(filters);
+        searchProviders({
+            service: document.getElementById('searchService').value,
+            city: document.getElementById('searchCity').value
+        });
         closeModal('searchModal');
     });
     
     document.getElementById('otherServiceSearchForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        const filters = { keyword: document.getElementById('customService').value };
-        searchProviders(filters);
+        searchProviders({ keyword: document.getElementById('customService').value });
         closeModal('otherServiceModal');
     });
 
-    // --- ربط نموذج التسجيل (مع مفتاح الدولة) ---
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const successMsg = document.getElementById('registerSuccess');
-        
-        const countryCode = document.getElementById('countryCode').value;
-        const phone = document.getElementById('providerPhone').value;
-        const fullPhone = countryCode + phone; // دمج المفتاح مع الرقم
-
+        const fullPhone = document.getElementById('countryCode').value + document.getElementById('providerPhone').value;
         const formData = {
-            name: document.getElementById('provider
+            name: document.getElementById('providerName').value,
+            phone: fullPhone,
+            service: document.getElementById('providerService').value === 'أخرى' ? document.getElementById('otherService').value : document.getElementById('providerService').value,
+            city: document.getElementById('providerCity').value,
+            is_approved: false
+        };
+        
+        const { error } = await supabase.from('providers').insert([formData]);
+        if (error) {
+            alert('حدث خطأ أثناء التسجيل.');
+        } else {
+            document.getElementById('registerSuccess').style.display = 'block';
+            e.target.reset();
+            setTimeout(() => {
+                closeModal('registerModal');
+                document.getElementById('registerSuccess').style.display = 'none';
+            }, 2500);
+        }
+    });
+    
+    document.getElementById('providerService').addEventListener('change', function() {
+        document.getElementById('otherServiceGroup').style.display = (this.value === 'أخرى') ? 'block' : 'none';
+    });
+
+    document.getElementById('addPostForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const postData = {
+            author: document.getElementById('postAuthor').value,
+            title: document.getElementById('postTitle').value,
+            content: document.getElementById('postContent').value
+        };
+        const { error } = await supabase.from('posts').insert([postData]);
+        if (error) {
+            alert('حدث خطأ أثناء النشر.');
+        } else {
+            document.getElementById('postSuccess').style.display = 'block';
+            e.target.reset();
+            loadPosts();
+            setTimeout(() => {
+                closeModal('addPostModal');
+                document.getElementById('postSuccess').style.display = 'none';
+            }, 2000);
+        }
+    });
+});
