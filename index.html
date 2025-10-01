@@ -4,12 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة خدمة - ربط العملاء بمقدمي الخدمات</title>
-    <meta name="description" content="منصة لربط العملاء بمقدمي الخدمات في مختلف المجالات مثل البناء والكهرباء والسباكة والميكانيكا والنجارة">
+    <meta name="description" content="منصة لربط العملاء بمقدمي الخدمات في مختلف المجالات.">
     <meta name="keywords" content="خدمات, بناء, كهرباء, سباكة, ميكانيكا, نجارة, حرف">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4CAF50">
-    <link rel="apple-touch-icon" href="images/icon-192x192.png">
-    <link rel="icon" type="image/png" href="images/icon-192x192.png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -18,29 +14,17 @@
     <nav class="navbar">
         <div class="container">
             <div class="nav-content">
-                <div class="logo">
-                    <img src="https://mohanned375.github.io/khidma/images/icon.png" alt="منصة خدمة">
-                    منصة خدمة
-                </div>
-                
+                <div class="logo"><img src="https://mohanned375.github.io/khidma/images/icon.png" alt="شعار منصة خدمة"> منصة خدمة</div>
                 <ul class="nav-menu" id="navMenu">
                     <li><a href="#home">الرئيسية</a></li>
                     <li><a href="#services">الخدمات</a></li>
                     <li><a href="#contact">اتصل بنا</a></li>
                 </ul>
-                
-                <div class="nav-buttons" id="navButtons">
-                    <button class="btn btn-primary" onclick="openRegisterModal()">
-                        <i class="fas fa-user-plus"></i> <span>تسجيل مقدم خدمة</span>
-                    </button>
-                    <button class="btn btn-secondary" onclick="openSearchModal()">
-                        <i class="fas fa-search"></i> <span>البحث</span>
-                    </button>
+                <div class="nav-buttons">
+                    <button class="btn btn-primary" onclick="openModal('registerModal')"><i class="fas fa-user-plus"></i> <span>تسجيل</span></button>
+                    <button class="btn btn-secondary" onclick="openModal('searchModal')"><i class="fas fa-search"></i> <span>البحث</span></button>
                 </div>
-
-                <button class="menu-toggle" onclick="toggleMenu()">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
             </div>
         </div>
     </nav>
@@ -51,10 +35,8 @@
             <h1>مرحباً بك في منصة خدمة</h1>
             <p>نربط بين العملاء ومقدمي الخدمات في جميع المجالات</p>
             <div class="search-container">
-                <input type="text" class="search-box" placeholder="ابحث عن الخدمة التي تحتاجها..." id="mainSearch">
-                <button class="search-btn">
-                    <i class="fas fa-search"></i>
-                </button>
+                <input type="text" class="search-box" id="mainSearch" placeholder="ابحث عن خدمة أو مقدم خدمة...">
+                <button class="search-btn" id="mainSearchBtn"><i class="fas fa-search"></i></button>
             </div>
         </div>
     </section>
@@ -96,8 +78,12 @@
     <section class="posts-section" id="posts">
         <div class="container">
             <h2 class="section-title">منشورات المجتمع</h2>
-            <div class="add-post-container"><button class="btn btn-primary" onclick="openAddPostModal()"><i class="fas fa-plus"></i> إضافة منشور جديد</button></div>
-            <div class="posts-container" id="postsContainer"><div class="posts-list" id="postsList"><div class="no-posts-message" id="noPostsMessage"><i class="fas fa-comments"></i><p>لا توجد منشورات حتى الآن.</p></div></div></div>
+            <div class="add-post-container"><button class="btn btn-primary" onclick="openModal('addPostModal')"><i class="fas fa-plus"></i> إضافة منشور جديد</button></div>
+            <div class="posts-container" id="postsContainer">
+                <div class="posts-list" id="postsList">
+                    <div class="no-posts-message" id="noPostsMessage"><i class="fas fa-comments"></i><p>لا توجد منشورات حتى الآن.</p></div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -105,21 +91,8 @@
     <section class="search-results" id="searchResults" style="display: none;">
         <div class="container">
             <h2 class="section-title">نتائج البحث</h2>
-            <div class="loading" id="loading" style="display: none;">جاري البحث...</div>
+            <div class="loading" id="loading" style="display: none;"></div>
             <div class="providers-list" id="providersList"></div>
-        </div>
-    </section>
-
-    <!-- قسم المميزات -->
-    <section class="features" id="about">
-        <div class="container">
-            <h2 class="section-title">لماذا تختار منصة خدمة؟</h2>
-            <div class="features-grid">
-                <div class="feature-item"><div class="feature-icon"><i class="fas fa-users"></i></div><h3>سهولة التواصل</h3><p>تواصل مباشر مع مقدمي الخدمات</p></div>
-                <div class="feature-item"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3>موثوقية عالية</h3><p>مقدمو خدمات مسجلون ومعتمدون</p></div>
-                <div class="feature-item"><div class="feature-icon"><i class="fas fa-clock"></i></div><h3>توفير الوقت</h3><p>اعثر على الخدمة في دقائق</p></div>
-                <div class="feature-item"><div class="feature-icon"><i class="fas fa-money-bill-wave"></i></div><h3>مجاني تماماً</h3><p>استخدام المنصة مجاني للجميع</p></div>
-            </div>
         </div>
     </section>
 
@@ -128,8 +101,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section"><h3>منصة خدمة</h3><p>نربط بين العملاء ومقدمي الخدمات لتسهيل الحصول على الخدمات.</p></div>
-                <div class="footer-section"><h3>روابط سريعة</h3><ul><li><a href="#home">الرئيسية</a></li><li><a href="#services">الخدمات</a></li><li><a href="#about">حولنا</a></li></ul></div>
-                <div class="footer-section"><h3>تواصل معنا</h3><ul><li><i class="fas fa-envelope"></i> <a href="mailto:mohanned20013@gmail.com">mohanned20013@gmail.com</a></li><li><i class="fas fa-phone"></i> <a href="tel:0965640434">0965640434</a></li></ul></div>
+                <div class="footer-section"><h3>روابط سريعة</h3><ul><li><a href="#home">الرئيسية</a></li><li><a href="#services">الخدمات</a></li></ul></div>
+                <div class="footer-section"><h3>تواصل معنا</h3><ul><li><i class="fas fa-envelope"></i> <a href="mailto:mohanned20013@gmail.com">mohanned20013@gmail.com</a></li></ul></div>
             </div>
             <div class="footer-bottom"><p>&copy; 2025 منصة خدمة. جميع الحقوق محفوظة.</p></div>
         </div>
@@ -142,12 +115,10 @@
             <h2>تسجيل مقدم خدمة</h2>
             <form id="registerForm">
                 <div class="form-group"><label for="providerName">الاسم الكامل:</label><input type="text" id="providerName" required></div>
-                
-                <!-- حقل رقم الهاتف المحدث -->
                 <div class="form-group">
                     <label for="providerPhone">رقم الهاتف:</label>
                     <div class="phone-input-group">
-                        <select id="countryCode" name="countryCode">
+                        <select id="countryCode">
                             <option value="963">+963 (سوريا)</option>
                             <option value="966">+966 (السعودية)</option>
                             <option value="971">+971 (الإمارات)</option>
@@ -169,7 +140,6 @@
                         <input type="tel" id="providerPhone" required placeholder="أدخل الرقم بدون الصفر">
                     </div>
                 </div>
-
                 <div class="form-group"><label for="providerService">نوع الخدمة:</label><select id="providerService" required><option value="">اختر الخدمة</option><option value="بناء">بناء</option><option value="كهرباء">كهرباء</option><option value="سباكة">سباكة</option><option value="ميكانيكا">ميكانيكا</option><option value="نجارة">نجارة</option><option value="أخرى">أخرى</option></select></div>
                 <div class="form-group" id="otherServiceGroup" style="display: none;"><label for="otherService">حدد الخدمة:</label><input type="text" id="otherService"></div>
                 <div class="form-group"><label for="providerCity">المدينة:</label><input type="text" id="providerCity" required></div>
@@ -182,7 +152,6 @@
     <div id="addPostModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('addPostModal')">&times;</span><h2>إضافة منشور</h2><form id="addPostForm"><div class="form-group"><label for="postAuthor">اسمك:</label><input type="text" id="postAuthor" required></div><div class="form-group"><label for="postTitle">العنوان:</label><input type="text" id="postTitle" required></div><div class="form-group"><label for="postContent">المحتوى:</label><textarea id="postContent" rows="4" required></textarea></div><button type="submit" class="btn btn-primary" style="width:100%;">نشر</button></form><div id="postSuccess" class="alert alert-success" style="display:none;">تم النشر بنجاح!</div></div></div>
     <div id="otherServiceModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('otherServiceModal')">&times;</span><h2>خدمة أخرى</h2><form id="otherServiceSearchForm"><div class="form-group"><label for="customService">اكتب الخدمة:</label><input type="text" id="customService" required></div><button type="submit" class="btn btn-primary" style="width:100%;">بحث</button></form></div></div>
 
-    <!-- ملفات JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>
