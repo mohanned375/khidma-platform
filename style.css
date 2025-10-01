@@ -99,3 +99,60 @@ img { max-width: 100%; }
     .navbar .nav-buttons .btn i { margin: 0; }
     .navbar .nav-menu { display: none; } /* إخفاء القائمة الرئيسية */
 }
+
+/* --- تعديلات شريط التنقل --- */
+
+/* تصغير حجم الأيقونة */
+.navbar .logo img {
+    width: 35px;  /* تعديل العرض */
+    height: 35px; /* تعديل الارتفاع */
+}
+
+/* ضمان محاذاة اسم المنصة بجانب الشعار */
+.navbar .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* مسافة بسيطة بين الشعار والاسم */
+}
+
+/* تعديل ترتيب العناصر داخل شريط التنقل */
+.navbar .nav-content {
+    display: flex;
+    justify-content: space-between; /* يضع مسافة بين القسم الأيمن والأيسر */
+    align-items: center;
+    width: 100%;
+}
+
+.nav-left-section {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* مسافة بين الشعار والقائمة الرئيسية */
+}
+
+.nav-right-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* تعديل مهم للشاشات الصغيرة */
+@media (max-width: 768px) {
+    /* إخفاء القائمة الرئيسية في الشاشات الصغيرة */
+    .nav-left-section .nav-menu {
+        display: none;
+    }
+
+    /* إظهار القائمة المنسدلة عند الضغط */
+    .nav-right-section .nav-menu.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        width: 150px;
+        background-color: white;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        border-radius: 8px;
+        padding: 10px 0;
+    }
+}
