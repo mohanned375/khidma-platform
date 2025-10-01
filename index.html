@@ -52,7 +52,7 @@
             <p>نربط بين العملاء ومقدمي الخدمات في جميع المجالات</p>
             <div class="search-container">
                 <input type="text" class="search-box" placeholder="ابحث عن الخدمة التي تحتاجها..." id="mainSearch">
-                <button class="search-btn" onclick="performSearch()">
+                <button class="search-btn">
                     <i class="fas fa-search"></i>
                 </button>
             </div>
@@ -60,74 +60,60 @@
     </section>
 
     <!-- قسم الخدمات -->
-<div class="services-grid" id="services">
-    <div class="service-card" onclick="searchByCategory(\'بناء\')">
-        <div class="service-card-image-wrapper">
-            <img src="https://mohanned375.github.io/khidma/images/building.png" alt="خدمات البناء">
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title">تصفح الخدمات</h2>
+            <div class="services-grid">
+                <div class="service-card" onclick="searchByCategory('بناء')">
+                    <div class="service-card-image-wrapper">
+                        <img src="https://mohanned375.github.io/khidma/images/building.png" alt="خدمات البناء">
+                    </div>
+                    <div class="service-card-header">
+                        <h3>خدمات البناء</h3>
+                    </div>
+                </div>
+                <div class="service-card" onclick="searchByCategory('كهرباء')">
+                    <div class="service-card-image-wrapper">
+                        <img src="https://mohanned375.github.io/khidma/images/electricity.png" alt="خدمات الكهرباء">
+                    </div>
+                    <div class="service-card-header">
+                        <h3>خدمات الكهرباء</h3>
+                    </div>
+                </div>
+                <div class="service-card" onclick="searchByCategory('سباكة')">
+                    <div class="service-card-image-wrapper">
+                        <img src="https://mohanned375.github.io/khidma/images/plumbing.png" alt="خدمات السباكة">
+                    </div>
+                    <div class="service-card-header">
+                        <h3>خدمات السباكة</h3>
+                    </div>
+                </div>
+                <div class="service-card" onclick="searchByCategory('ميكانيكا')">
+                    <div class="service-card-image-wrapper">
+                        <img src="https://mohanned375.github.io/khidma/images/mechanics.png" alt="خدمات الميكانيكا">
+                    </div>
+                    <div class="service-card-header">
+                        <h3>خدمات الميكانيكا</h3>
+                    </div>
+                </div>
+                <div class="service-card" onclick="searchByCategory('نجارة')">
+                    <div class="service-card-image-wrapper">
+                        <img src="https://mohanned375.github.io/khidma/images/carpentry.png" alt="خدمات النجارة">
+                    </div>
+                    <div class="service-card-header">
+                        <h3>خدمات النجارة</h3>
+                    </div>
+                </div>
+                <div class="service-card" onclick="openModal('otherServiceModal')">
+                    <div class="service-card-image-wrapper">
+                        <img src="https://mohanned375.github.io/khidma/images/other services.png" alt="خدمات أخرى">
+                    </div>
+                    <div class="service-card-header">
+                        <h3>خدمات أخرى</h3>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="service-card-header">
-            <h3>خدمات البناء</h3>
-        </div>
-        <div class="service-card-body">
-            <p>مقاولون ومهندسون متخصصون</p>
-        </div>
-    </div>
-    <div class="service-card" onclick="searchByCategory(\'كهرباء\')">
-        <div class="service-card-image-wrapper">
-            <img src="https://mohanned375.github.io/khidma/images/electricity.png" alt="خدمات الكهرباء">
-        </div>
-        <div class="service-card-header">
-            <h3>خدمات الكهرباء</h3>
-        </div>
-        <div class="service-card-body">
-            <p>فنيون كهربائيون محترفون</p>
-        </div>
-    </div>
-    <div class="service-card" onclick="searchByCategory(\'سباكة\')">
-        <div class="service-card-image-wrapper">
-            <img src="https://mohanned375.github.io/khidma/images/plumbing.png" alt="خدمات السباكة">
-        </div>
-        <div class="service-card-header">
-            <h3>خدمات السباكة</h3>
-        </div>
-        <div class="service-card-body">
-            <p>سباكون مهرة لحل المشاكل</p>
-        </div>
-    </div>
-    <div class="service-card" onclick="searchByCategory(\'ميكانيكا\')">
-        <div class="service-card-image-wrapper">
-            <img src="https://mohanned375.github.io/khidma/images/mechanics.png" alt="خدمات الميكانيكا">
-        </div>
-        <div class="service-card-header">
-            <h3>خدمات الميكانيكا</h3>
-        </div>
-        <div class="service-card-body">
-            <p>صيانة وإصلاح السيارات</p>
-        </div>
-    </div>
-    <div class="service-card" onclick="searchByCategory(\'نجارة\')">
-        <div class="service-card-image-wrapper">
-            <img src="https://mohanned375.github.io/khidma/images/carpentry.png" alt="خدمات النجارة">
-        </div>
-        <div class="service-card-header">
-            <h3>خدمات النجارة</h3>
-        </div>
-        <div class="service-card-body">
-            <p>صناعة وإصلاح الأثاث</p>
-        </div>
-    </div>
-    <div class="service-card" onclick="searchByCategory(\'أخرى\')">
-        <div class="service-card-image-wrapper">
-            <img src="https://mohanned375.github.io/khidma/images/other services.png" alt="خدمات أخرى">
-        </div>
-        <div class="service-card-header">
-            <h3>خدمات أخرى</h3>
-        </div>
-        <div class="service-card-body">
-            <p>ابحث عن أي خدمة أخرى لا تجدها في القائمة</p>
-        </div>
-    </div>
-
     </section>
 
     <!-- قسم المنشورات -->
@@ -135,23 +121,29 @@
         <div class="container">
             <h2 class="section-title">منشورات المجتمع</h2>
             
-            <!-- زر إضافة منشور -->
             <div class="add-post-container">
                 <button class="btn btn-primary" onclick="openAddPostModal()">
                     <i class="fas fa-plus"></i> إضافة منشور جديد
                 </button>
             </div>
             
-            <!-- منطقة عرض المنشورات مع التمرير المنفصل -->
             <div class="posts-container" id="postsContainer">
                 <div class="posts-list" id="postsList">
-                    <!-- سيتم عرض المنشورات هنا ديناميكياً -->
                     <div class="no-posts-message" id="noPostsMessage">
                         <i class="fas fa-comments"></i>
                         <p>لا توجد منشورات حتى الآن. كن أول من يشارك!</p>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- قسم نتائج البحث -->
+    <section class="search-results" id="searchResults" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">نتائج البحث</h2>
+            <div class="loading" id="loading" style="display: none;"></div>
+            <div class="providers-list" id="providersList"></div>
         </div>
     </section>
 
@@ -168,15 +160,6 @@
         </div>
     </section>
 
-    <!-- قسم نتائج البحث -->
-    <section class="search-results" id="searchResults" style="display: none;">
-        <div class="container">
-            <h2 class="section-title">نتائج البحث</h2>
-            <div class="loading" id="loading"></div>
-            <div class="providers-list" id="providersList"></div>
-        </div>
-    </section>
-
     <!-- التذييل -->
     <footer class="footer" id="contact">
         <div class="container">
@@ -189,209 +172,14 @@
         </div>
     </footer>
 
-    <!-- ================================================================== -->
-<!--      الكود الكامل والصحيح لكل النماذج المنبثقة (Modals)      -->
-<!-- ================================================================== -->
-
-<!-- نموذج تسجيل مقدم الخدمة -->
-<div id="registerModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal(\'registerModal\')">&times;</span>
-        <h2>تسجيل مقدم خدمة جديد</h2>
-        
-        <form id="registerForm">
-            <div class="form-group">
-                <label for="providerName">الاسم الكامل:</label>
-                <input type="text" id="providerName" name="name" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="providerPhone">رقم الهاتف:</label>
-                <div style="display: flex; gap: 5px;">
-                    <select id="countryCode" name="countryCode" style="width: auto; flex-shrink: 0;">
-                        <option value="+963">+963 (سوريا)</option>
-                        <option value="+966">+966 (السعودية)</option>
-                        <option value="+971">+971 (الإمارات)</option>
-                        <option value="+20">+20 (مصر)</option>
-                        <option value="+962">+962 (الأردن)</option>
-                        <option value="+961">+961 (لبنان)</option>
-                        <option value="+970">+970 (فلسطين)</option>
-                        <option value="+965">+965 (الكويت)</option>
-                        <option value="+974">+974 (قطر)</option>
-                        <option value="+973">+973 (البحرين)</option>
-                        <option value="+968">+968 (عمان)</option>
-                        <option value="+967">+967 (اليمن)</option>
-                        <option value="+218">+218 (ليبيا)</option>
-                        <option value="+212">+212 (المغرب)</option>
-                        <option value="+213">+213 (الجزائر)</option>
-                        <option value="+216">+216 (تونس)</option>
-                        <option value="+249">+249 (السودان)</option>
-                        <option value="+252">+252 (الصومال)</option>
-                        <option value="+253">+253 (جيبوتي)</option>
-                        <option value="+269">+269 (جزر القمر)</option>
-                        <option value="+972">+972 (إسرائيل)</option>
-                        <!-- يمكن إضافة المزيد من مفاتيح الدول هنا -->
-                    </select>
-                    <input type="tel" id="providerPhone" name="phone" required placeholder="أدخل رقم الهاتف بدون الصفر البادئ">
-                </div>
-                <small style="color: #666; margin-top: 5px; display: block;">أدخل رقم الهاتف بدون الصفر البادئ (مثال: 965640434)</small>
-            </div>
-            
-            <div class="form-group">
-                <label for="providerService">نوع الخدمة:</label>
-                <select id="providerService" name="service" required>
-                    <option value="">اختر نوع الخدمة</option>
-                    <option value="بناء">خدمات البناء</option>
-                    <option value="كهرباء">خدمات الكهرباء</option>
-                    <option value="سباكة">خدمات السباكة</option>
-                    <option value="ميكانيكا">خدمات الميكانيكا</option>
-                    <option value="نجارة">خدمات النجارة</option>
-                    <option value="حرف">الأعمال الحرفية</option>
-                    <option value="أخرى">أخرى</option>
-                </select>
-            </div>
-            
-            <div class="form-group" id="otherServiceGroup" style="display: none;">
-                <label for="otherService">حدد نوع الخدمة:</label>
-                <input type="text" id="otherService" name="otherService">
-            </div>
-            
-            <div class="form-group">
-                <label for="providerCity">المدينة:</label>
-                <input type="text" id="providerCity" name="city" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="providerDescription">وصف الخدمة:</label>
-                <textarea id="providerDescription" name="description" placeholder="اكتب وصفاً مختصراً عن خدماتك وخبرتك"></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label for="providerExperience">سنوات الخبرة:</label>
-                <input type="number" id="providerExperience" name="experience" min="0" max="50">
-            </div>
-            
-            <button type="submit" class="btn btn-primary" style="width: 100%;">
-                <i class="fas fa-user-plus"></i> تسجيل
-            </button>
-        </form>
-        
-        <!-- عناصر التنبيه المفقودة -->
-        <div class="alert alert-success" id="registerSuccess" style="display: none;">
-            تم تسجيلك بنجاح! سيتم مراجعة بياناتك والموافقة عليها قريباً.
-        </div>
-        <div class="alert alert-error" id="registerError" style="display: none;">
-            حدث خطأ أثناء التسجيل. يرجى المحاولة مرة أخرى.
-        </div>
-    </div>
-</div>
-
-<!-- نموذج البحث المتقدم -->
-<div id="searchModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal(\'searchModal\')">&times;</span>
-        <h2>البحث المتقدم</h2>
-        
-        <form id="advancedSearchForm">
-            <div class="form-group">
-                <label for="searchService">نوع الخدمة:</label>
-                <select id="searchService" name="service">
-                    <option value="">جميع الخدمات</option>
-                    <option value="بناء">خدمات البناء</option>
-                    <option value="كهرباء">خدمات الكهرباء</option>
-                    <option value="سباكة">خدمات السباكة</option>
-                    <option value="ميكانيكا">خدمات الميكانيكا</option>
-                    <option value="نجارة">خدمات النجارة</option>
-                    <option value="حرف">الأعمال الحرفية</option>
-                    <option value="أخرى">أخرى</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="searchCity">المدينة:</label>
-                <input type="text" id="searchCity" name="city" placeholder="اكتب اسم المدينة">
-            </div>
-            
-            <div class="form-group">
-                <label for="searchKeyword">كلمة مفتاحية:</label>
-                <input type="text" id="searchKeyword" name="keyword" placeholder="ابحث بكلمة مفتاحية">
-            </div>
-            
-            <button type="submit" class="btn btn-primary" style="width: 100%;">
-                <i class="fas fa-search"></i> بحث
-            </button>
-        </form>
-    </div>
-</div>
-
-<!-- نموذج خدمة أخرى -->
-<div id="otherServiceModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal(\'otherServiceModal\')">&times;</span>
-        <h2>البحث عن خدمة أخرى</h2>
-        
-        <form id="otherServiceSearchForm">
-            <div class="form-group">
-                <label for="customService">نوع الخدمة المطلوبة:</label>
-                <input type="text" id="customService" name="customService" placeholder="اكتب نوع الخدمة التي تبحث عنها" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="customCity">المدينة:</label>
-                <input type="text" id="customCity" name="city" placeholder="اكتب اسم المدينة">
-            </div>
-            
-            <button type="submit" class="btn btn-primary" style="width: 100%;">
-                <i class="fas fa-search"></i> بحث
-            </button>
-        </form>
-    </div>
-</div>
-
-<!-- نموذج إضافة منشور -->
-<div id="addPostModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal(\'addPostModal\')">&times;</span>
-        <h2>إضافة منشور جديد</h2>
-        
-        <form id="addPostForm">
-            <div class="form-group">
-                <label for="postAuthor">اسمك:</label>
-                <input type="text" id="postAuthor" name="author" required placeholder="أدخل اسمك">
-            </div>
-            
-            <div class="form-group">
-                <label for="postTitle">عنوان المنشور:</label>
-                <input type="text" id="postTitle" name="title" required placeholder="أدخل عنوان المنشور">
-            </div>
-            
-            <div class="form-group">
-                <label for="postContent">محتوى المنشور:</label>
-                <textarea id="postContent" name="content" required placeholder="اكتب محتوى المنشور هنا..." rows="5"></textarea>
-            </div>
-            
-            <button type="submit" class="btn btn-primary" style="width: 100%;">
-                <i class="fas fa-paper-plane"></i> نشر
-            </button>
-        </form>
-        
-        <!-- عناصر التنبيه -->
-        <div class="alert alert-success" id="postSuccess" style="display: none;">
-            تم نشر المنشور بنجاح!
-        </div>
-        <div class="alert alert-error" id="postError" style="display: none;">
-            حدث خطأ أثناء النشر. يرجى المحاولة مرة أخرى.
-        </div>
-    </div>
-</div>
+    <!-- النماذج المنبثقة (Modals) -->
+    <div id="registerModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('registerModal')">&times;</span><h2>تسجيل مقدم خدمة</h2><form id="registerForm"><div class="form-group"><label for="providerName">الاسم الكامل:</label><input type="text" id="providerName" required></div><div class="form-group"><label for="providerPhone">رقم الهاتف:</label><input type="tel" id="providerPhone" required></div><div class="form-group"><label for="providerService">نوع الخدمة:</label><select id="providerService" required><option value="">اختر الخدمة</option><option value="بناء">بناء</option><option value="كهرباء">كهرباء</option><option value="سباكة">سباكة</option><option value="ميكانيكا">ميكانيكا</option><option value="نجارة">نجارة</option><option value="أخرى">أخرى</option></select></div><div class="form-group" id="otherServiceGroup" style="display: none;"><label for="otherService">حدد الخدمة:</label><input type="text" id="otherService"></div><div class="form-group"><label for="providerCity">المدينة:</label><input type="text" id="providerCity" required></div><button type="submit" class="btn btn-primary" style="width:100%;">تسجيل</button></form><div id="registerSuccess" class="alert alert-success" style="display:none;">تم التسجيل بنجاح!</div></div></div>
+    <div id="searchModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('searchModal')">&times;</span><h2>بحث متقدم</h2><form id="advancedSearchForm"><div class="form-group"><label for="searchService">نوع الخدمة:</label><select id="searchService"><option value="">الكل</option><option value="بناء">بناء</option><option value="كهرباء">كهرباء</option></select></div><div class="form-group"><label for="searchCity">المدينة:</label><input type="text" id="searchCity"></div><button type="submit" class="btn btn-primary" style="width:100%;">بحث</button></form></div></div>
+    <div id="addPostModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('addPostModal')">&times;</span><h2>إضافة منشور</h2><form id="addPostForm"><div class="form-group"><label for="postAuthor">اسمك:</label><input type="text" id="postAuthor" required></div><div class="form-group"><label for="postTitle">العنوان:</label><input type="text" id="postTitle" required></div><div class="form-group"><label for="postContent">المحتوى:</label><textarea id="postContent" rows="4" required></textarea></div><button type="submit" class="btn btn-primary" style="width:100%;">نشر</button></form><div id="postSuccess" class="alert alert-success" style="display:none;">تم النشر بنجاح!</div></div></div>
+    <div id="otherServiceModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('otherServiceModal')">&times;</span><h2>خدمة أخرى</h2><form id="otherServiceSearchForm"><div class="form-group"><label for="customService">اكتب الخدمة:</label><input type="text" id="customService" required></div><button type="submit" class="btn btn-primary" style="width:100%;">بحث</button></form></div></div>
 
     <!-- ملفات JavaScript -->
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
-
 </body>
 </html>
-
-
-
-    
