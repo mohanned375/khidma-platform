@@ -17,6 +17,7 @@ img { max-width: 100%; }
 .navbar .nav-menu { display: flex; align-items: center; }
 .navbar .nav-menu li { margin: 0 15px; }
 .navbar .nav-menu a { color: var(--dark-color); font-weight: 500; }
+.nav-right-section { display: flex; align-items: center; gap: 10px; position: relative; }
 .navbar .nav-buttons { display: flex; gap: 10px; }
 .navbar .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
 
@@ -36,7 +37,7 @@ img { max-width: 100%; }
 .service-card-image-wrapper img { width: 100%; height: 150px; object-fit: cover; display: block; }
 .service-card-header { background-color: var(--primary-color); color: #fff; padding: 8px 20px; margin-top: -5px; font-size: 1.1rem; text-align: center; border-radius: 20px; width: fit-content; max-width: 90%; }
 
-/* --- Posts Section (مع ضمان التمرير) --- */
+/* --- Posts Section --- */
 .posts-section { padding: 60px 0; background-color: #f9f9f9; }
 .add-post-container { text-align: center; margin-bottom: 30px; }
 .posts-container { max-height: 500px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px; background: #fff; }
@@ -44,6 +45,11 @@ img { max-width: 100%; }
 .post-item { border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; }
 .no-posts-message { text-align: center; color: #888; padding: 50px 0; }
 .no-posts-message i { font-size: 3rem; display: block; margin-bottom: 10px; }
+
+/* --- Features Section --- */
+.features { padding: 60px 0; text-align: center; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+.feature-item .feature-icon { font-size: 3rem; color: var(--primary-color); margin-bottom: 15px; }
 
 /* --- Search Results --- */
 .search-results { padding: 60px 0; }
@@ -73,8 +79,23 @@ img { max-width: 100%; }
 
 /* --- Responsive Design --- */
 @media (max-width: 768px) {
-    .navbar .nav-menu { display: none; flex-direction: column; position: absolute; top: 65px; right: 10px; width: 150px; background-color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.2); border-radius: 8px; }
+    .navbar .nav-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: calc(100% + 10px); /* أسفل الحاوية الأب مباشرة */
+        left: 0; /* محاذاة إلى اليسار (لأننا في RTL) */
+        width: 150px;
+        background-color: white;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        border-radius: 8px;
+        padding: 10px 0;
+    }
     .navbar .nav-menu.active { display: flex; }
+    .navbar .nav-menu li { width: 100%; text-align: right; }
+    .navbar .nav-menu li a { padding: 10px 15px; display: block; }
     .navbar .menu-toggle { display: block; }
     .navbar .nav-buttons .btn span { display: none; }
+    .navbar .nav-buttons .btn i { margin: 0; }
+    .navbar .nav-menu { display: none; } /* إخفاء القائمة الرئيسية */
 }
