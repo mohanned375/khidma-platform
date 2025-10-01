@@ -13,8 +13,7 @@ img { max-width: 100%; }
 /* --- Navbar --- */
 .navbar { background-color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 0.75rem 0; position: sticky; top: 0; z-index: 1000; }
 .navbar .nav-content { display: flex; justify-content: space-between; align-items: center; }
-.navbar .logo { font-size: 1.2rem; font-weight: bold; display: flex; align-items: center; }
-.navbar .logo img { width: 40px; height: 40px; margin-left: 10px; }
+.navbar .logo { font-size: 1.2rem; font-weight: bold; display: flex; align-items: center; gap: 10px; }
 .navbar .nav-menu { display: flex; align-items: center; }
 .navbar .nav-menu li { margin: 0 15px; }
 .navbar .nav-menu a { color: var(--dark-color); font-weight: 500; }
@@ -23,7 +22,6 @@ img { max-width: 100%; }
 
 /* --- Hero Section --- */
 .hero { text-align: center; padding: 80px 0; background-color: #e0f2f1; }
-.hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
 .search-container { display: flex; justify-content: center; max-width: 600px; margin: 20px auto 0; }
 .search-box { width: 100%; padding: 15px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px 0 0 5px; }
 .search-btn { padding: 15px 20px; background-color: var(--primary-color); color: #fff; border: none; cursor: pointer; border-radius: 0 5px 5px 0; }
@@ -38,7 +36,7 @@ img { max-width: 100%; }
 .service-card-image-wrapper img { width: 100%; height: 150px; object-fit: cover; display: block; }
 .service-card-header { background-color: var(--primary-color); color: #fff; padding: 8px 20px; margin-top: -5px; font-size: 1.1rem; text-align: center; border-radius: 20px; width: fit-content; max-width: 90%; }
 
-/* --- Posts Section --- */
+/* --- Posts Section (مع ضمان التمرير) --- */
 .posts-section { padding: 60px 0; background-color: #f9f9f9; }
 .add-post-container { text-align: center; margin-bottom: 30px; }
 .posts-container { max-height: 500px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px; background: #fff; }
@@ -46,11 +44,6 @@ img { max-width: 100%; }
 .post-item { border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; }
 .no-posts-message { text-align: center; color: #888; padding: 50px 0; }
 .no-posts-message i { font-size: 3rem; display: block; margin-bottom: 10px; }
-
-/* --- Features Section (توسيط المحتوى) --- */
-.features { padding: 60px 0; text-align: center; }
-.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-.feature-item .feature-icon { font-size: 3rem; color: var(--primary-color); margin-bottom: 15px; }
 
 /* --- Search Results --- */
 .search-results { padding: 60px 0; }
@@ -60,12 +53,10 @@ img { max-width: 100%; }
 .provider-contact .btn { flex-grow: 1; }
 .loading { text-align: center; padding: 40px; font-size: 1.2rem; }
 
-/* --- Footer (توسيط المحتوى) --- */
+/* --- Footer --- */
 .footer { background-color: var(--dark-color); color: #fff; padding: 40px 0 20px; text-align: center; }
 .footer-content { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; }
 .footer-section { flex: 1; min-width: 220px; }
-.footer-section h3 { margin-bottom: 10px; }
-.footer-section a { color: #f4f4f4; }
 .footer-bottom { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #555; }
 
 /* --- Modals --- */
@@ -78,17 +69,12 @@ img { max-width: 100%; }
 .phone-input-group { display: flex; gap: 5px; }
 .phone-input-group select { width: auto; flex-shrink: 0; }
 .phone-input-group input { flex-grow: 1; }
-.alert { padding: 12px; margin-top: 15px; border-radius: 4px; }
-.alert-success { background-color: #d4edda; color: #155724; }
+.alert-success { background-color: #d4edda; color: #155724; padding: 12px; margin-top: 15px; border-radius: 4px; }
 
 /* --- Responsive Design --- */
 @media (max-width: 768px) {
     .navbar .nav-menu { display: none; flex-direction: column; position: absolute; top: 65px; right: 10px; width: 150px; background-color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.2); border-radius: 8px; }
     .navbar .nav-menu.active { display: flex; }
-    .navbar .nav-menu li { width: 100%; text-align: right; }
-    .navbar .nav-menu li a { display: block; padding: 10px 15px; }
     .navbar .menu-toggle { display: block; }
     .navbar .nav-buttons .btn span { display: none; }
-    .navbar .nav-buttons .btn i { margin: 0; }
-    .hero h1 { font-size: 2rem; }
 }
