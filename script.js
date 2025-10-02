@@ -79,7 +79,7 @@ async function loadPosts() {
     const postsList = document.getElementById('postsList');
     const noPostsMessage = document.getElementById('noPostsMessage');
     
-    // 1. هذا هو تعديل جملة select
+    // 1. التأكد من أن جملة select صحيحة
     const { data: posts, error } = await supabase
         .from('posts')
         .select(`
@@ -93,21 +93,32 @@ async function loadPosts() {
         `)
         .order('created_at', { ascending: false });
 
-    if (error || !posts || posts.length === 0) {
+    // 2. التأكد من معالجة الأخطاء بشكل صحيح
+    if (error) {
+        console.error('Error loading posts:', error); // هذا السطر مهم جدًا للتشخيص
+        postsList.innerHTML = '<p style="color: red; text-align: center;">حدث خطأ في تحميل المنشورات.</p>';
+        noPostsMessage.style.display = 'none';
+        return;
+    }
+
+    // 3. التأكد من معالجة عدم وجود منشورات
+    if (!posts || posts.length === 0) {
         postsList.innerHTML = '';
         noPostsMessage.style.display = 'block';
-        if(error) console.error('Error loading posts:', error);
         return;
     }
     
+    // 4. التأكد من أن الحلقة تستخدم المتغير الصحيح (posts)
     noPostsMessage.style.display = 'none';
-    postsList.innerHTML = ''; // نفرغ القائمة أولاً
+    postsList.innerHTML = ''; // نفرغ القائمة قبل إضافة العناصر الجديدة
 
-    // 2. هذا هو تعديل حلقة forEach
     posts.forEach(post => {
+        // 5. التأكد من أن استدعاء الدالة صحيح
         const postElement = createPostElement(post);
         postsList.appendChild(postElement);
     });
+}
+
 }
 
 // ========================================================
@@ -187,4 +198,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
