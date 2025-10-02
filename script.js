@@ -74,28 +74,39 @@ async function searchProviders(filters = {}) {
 // --- دوال المنشورات ---
 // ========================================================
 
+// --- الشكل النهائي لدالة loadPosts ---
 async function loadPosts() {
     const postsList = document.getElementById('postsList');
     const noPostsMessage = document.getElementById('noPostsMessage');
     
-    const { data, error } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
+    // 1. هذا هو تعديل جملة select
+    const { data: posts, error } = await supabase
+        .from('posts')
+        .select(`
+            *,
+            comments (
+                id,
+                content,
+                author,
+                created_at
+            )
+        `)
+        .order('created_at', { ascending: false });
 
-    if (error || !data || data.length === 0) {
+    if (error || !posts || posts.length === 0) {
         postsList.innerHTML = '';
         noPostsMessage.style.display = 'block';
+        if(error) console.error('Error loading posts:', error);
         return;
     }
     
     noPostsMessage.style.display = 'none';
-    postsList.innerHTML = '';
-    data.forEach(post => {
-        postsList.innerHTML += `
-            <div class="post-item">
-                <h4>${post.title}</h4>
-                <small>بواسطة: ${post.author} - ${new Date(post.created_at).toLocaleDateString('ar')}</small>
-                <p>${post.content}</p>
-            </div>
-        `;
+    postsList.innerHTML = ''; // نفرغ القائمة أولاً
+
+    // 2. هذا هو تعديل حلقة forEach
+    posts.forEach(post => {
+        const postElement = createPostElement(post);
+        postsList.appendChild(postElement);
     });
 }
 
@@ -176,3 +187,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
