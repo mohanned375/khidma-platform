@@ -119,7 +119,6 @@ async function loadPosts() {
     });
 }
 
-}
 
 // ========================================================
 // --- ربط الأحداث التي لا تحتاج إلى onclick ---
@@ -198,5 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
 
