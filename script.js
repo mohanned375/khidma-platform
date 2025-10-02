@@ -155,24 +155,28 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('otherServiceGroup').style.display = (this.value === 'أخرى') ? 'block' : 'none';
     });
 
-    document.getElementById('addPostForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const postData = {
-            author: document.getElementById('postAuthor').value,
-            title: document.getElementById('postTitle').value,
-            content: document.getElementById('postContent').value
-        };
-        const { error } = await supabase.from('posts').insert([postData]);
-        if (error) {
-            alert('حدث خطأ أثناء النشر.');
-        } else {
-            document.getElementById('postSuccess').style.display = 'block';
-            e.target.reset();
-            loadPosts();
-            setTimeout(() => {
-                closeModal('addPostModal');
-                document.getElementById('postSuccess').style.display = 'none';
-            }, 2000);
-        }
-    });
+    // --- شكل الدالة الكاملة بعد الإصلاح ---
+document.getElementById('addPostForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const postData = {
+        author: document.getElementById('postAuthor').value,
+        title: document.getElementById('postTitle').value,
+        content: document.getElementById('postContent').value,
+        created_at: new Date().toISOString() // <-- السطر المضاف
+    };
+    const { error } = await supabase.from('posts').insert([postData]);
+    if (error) {
+        alert('حدث خطأ أثناء النشر. يرجى المحاولة مرة أخرى.');
+        console.error('Supabase post error:', error); // لإظهار الخطأ في الكونسول
+    } else {
+        document.getElementById('postSuccess').style.display = 'block';
+        e.target.reset();
+        loadPosts();
+        setTimeout(() => {
+            closeModal('addPostModal');
+            document.getElementById('postSuccess').style.display = 'none';
+        }, 2000);
+    }
 });
+});
+
