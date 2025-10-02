@@ -71,15 +71,13 @@ async function searchProviders(filters = {}) {
 }
 
 // ========================================================
-// --- دوال المنشورات ---
+// --- دوال المنشورات والتعليقات ---
 // ========================================================
 
-// --- الشكل النهائي لدالة loadPosts ---
 async function loadPosts() {
     const postsList = document.getElementById('postsList');
     const noPostsMessage = document.getElementById('noPostsMessage');
     
-    // 1. التأكد من أن جملة select صحيحة
     const { data: posts, error } = await supabase
         .from('posts')
         .select(`
@@ -93,32 +91,122 @@ async function loadPosts() {
         `)
         .order('created_at', { ascending: false });
 
-    // 2. التأكد من معالجة الأخطاء بشكل صحيح
     if (error) {
-        console.error('Error loading posts:', error); // هذا السطر مهم جدًا للتشخيص
+        console.error('Error loading posts:', error);
         postsList.innerHTML = '<p style="color: red; text-align: center;">حدث خطأ في تحميل المنشورات.</p>';
         noPostsMessage.style.display = 'none';
         return;
     }
 
-    // 3. التأكد من معالجة عدم وجود منشورات
     if (!posts || posts.length === 0) {
         postsList.innerHTML = '';
         noPostsMessage.style.display = 'block';
         return;
     }
     
-    // 4. التأكد من أن الحلقة تستخدم المتغير الصحيح (posts)
     noPostsMessage.style.display = 'none';
-    postsList.innerHTML = ''; // نفرغ القائمة قبل إضافة العناصر الجديدة
+    postsList.innerHTML = '';
 
     posts.forEach(post => {
-        // 5. التأكد من أن استدعاء الدالة صحيح
         const postElement = createPostElement(post);
         postsList.appendChild(postElement);
     });
 }
 
+// --- الدوال الجديدة التي تمت إضافتها هنا ---
+
+function createPostElement(post) {
+    const postDiv = document.createElement('div');
+    postDiv.className = 'post-item';
+    postDiv.setAttribute('data-post-id', post.id);
+
+    const postDate = new Date(post.created_at).toLocaleDateString('ar-SA', { day: 'numeric', month: 'long' });
+    const commentsCount = post.comments ? post.comments.length : 0;
+
+    postDiv.innerHTML = `
+        <div class="post-header">
+            <div class="post-author">${post.author}</div>
+            <div class="post-date">${postDate}</div>
+        </div>
+        <h4 class="post-title">${post.title}</h4>
+        <p class="post-content">${post.content}</p>
+        
+        <div class="post-actions">
+            <button class="comment-toggle-btn" onclick="toggleComments(${post.id})">
+                <i class="fas fa-comments"></i>
+                <span>التعليقات (${commentsCount})</span>
+            </button>
+        </div>
+
+        <div class="comments-section" id="comments-section-${post.id}">
+            <div class="comments-list" id="comments-list-${post.id}">
+                ${post.comments && post.comments.length > 0 ? post.comments.map(createCommentElement).join('') : '<p class="no-comments">لا توجد تعليقات بعد. كن أول من يعلق!</p>'}
+            </div>
+            <div class="add-comment-form">
+                <input type="text" id="comment-author-${post.id}" class="comment-input" placeholder="اسمك...">
+                <input type="text" id="comment-content-${post.id}" class="comment-input" placeholder="اكتب تعليقك...">
+                <button class="comment-submit-btn" onclick="addComment(${post.id})">نشر</button>
+            </div>
+        </div>
+    `;
+    return postDiv;
+}
+
+function createCommentElement(comment) {
+    const commentDate = new Date(comment.created_at).toLocaleString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+    return `
+        <div class="comment-item">
+            <div class="comment-header">
+                <span class="comment-author">${comment.author}</span>
+                <span class="comment-date">${commentDate}</span>
+            </div>
+            <p class="comment-content">${comment.content}</p>
+        </div>
+    `;
+}
+
+function toggleComments(postId) {
+    const commentsSection = document.getElementById(`comments-section-${postId}`);
+    commentsSection.classList.toggle('active');
+}
+
+async function addComment(postId) {
+    const authorInput = document.getElementById(`comment-author-${postId}`);
+    const contentInput = document.getElementById(`comment-content-${postId}`);
+    
+    const author = authorInput.value.trim();
+    const content = contentInput.value.trim();
+
+    if (!author || !content) {
+        alert('يرجى إدخال اسمك ومحتوى التعليق.');
+        return;
+    }
+
+    const { data, error } = await supabase
+        .from('comments')
+        .insert([{ post_id: postId, author: author, content: content }])
+        .select();
+
+    if (error) {
+        console.error('Error adding comment:', error);
+        alert('حدث خطأ أثناء إضافة التعليق.');
+    } else {
+        const newComment = data[0];
+        const commentsList = document.getElementById(`comments-list-${postId}`);
+        
+        const noCommentsMsg = commentsList.querySelector('.no-comments');
+        if (noCommentsMsg) noCommentsMsg.remove();
+
+        commentsList.innerHTML += createCommentElement(newComment);
+        
+        authorInput.value = '';
+        contentInput.value = '';
+
+        const toggleButton = document.querySelector(`#postsList [data-post-id='${postId}'] .comment-toggle-btn span`);
+        const currentCount = parseInt(toggleButton.textContent.match(/\d+/)[0]);
+        toggleButton.textContent = `التعليقات (${currentCount + 1})`;
+    }
+}
 
 // ========================================================
 // --- ربط الأحداث التي لا تحتاج إلى onclick ---
@@ -197,6 +285,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-
-
