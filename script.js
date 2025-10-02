@@ -191,4 +191,5 @@ document.getElementById('addPostForm').addEventListener('submit', async (e) => {
             document.getElementById('postSuccess').style.display = 'none';
         }, 2000);
     }
-});
+  });
+ });
