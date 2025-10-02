@@ -158,25 +158,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- شكل الدالة الكاملة بعد الإصلاح ---
 document.getElementById('addPostForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const postData = {
-        author: document.getElementById('postAuthor').value,
-        title: document.getElementById('postTitle').value,
-        content: document.getElementById('postContent').value,
-        created_at: new Date().toISOString() // <-- السطر المضاف
-    };
-    const { error } = await supabase.from('posts').insert([postData]);
+
+    // نحصل على القيم من الحقول
+    const author = document.getElementById('postAuthor').value;
+    const title = document.getElementById('postTitle').value;
+    const content = document.getElementById('postContent').value;
+
+    // نقوم بإرسال البيانات مباشرة إلى Supabase
+    const { data, error } = await supabase
+        .from('posts')
+        .insert([
+            { 
+                author: author, 
+                title: title, 
+                content: content 
+                // لا نرسل created_at أو id، وندع Supabase تتعامل معها
+            }
+        ]);
+
     if (error) {
-        alert('حدث خطأ أثناء النشر. يرجى المحاولة مرة أخرى.');
-        console.error('Supabase post error:', error); // لإظهار الخطأ في الكونسول
+        // إذا حدث خطأ، اعرضه في الكونسول لمعرفة السبب الدقيق
+        console.error('Supabase post error:', error.message);
+        alert('حدث خطأ أثناء النشر. تفاصيل الخطأ: ' + error.message);
     } else {
+        // إذا نجح الأمر
+        console.log('Post added successfully:', data);
         document.getElementById('postSuccess').style.display = 'block';
         e.target.reset();
-        loadPosts();
+        loadPosts(); // إعادة تحميل المنشورات
         setTimeout(() => {
             closeModal('addPostModal');
             document.getElementById('postSuccess').style.display = 'none';
         }, 2000);
     }
 });
-});
-
