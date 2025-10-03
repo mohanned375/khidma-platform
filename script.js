@@ -120,7 +120,8 @@ function createPostElement(post) {
     postDiv.className = 'post-item';
     postDiv.setAttribute('data-post-id', post.id);
 
-    const postDate = new Date(post.created_at).toLocaleDateString('ar-SA', { day: 'numeric', month: 'long' });
+    // --- السطر الجديد ---
+    const postDate = new Date(post.created_at).toLocaleString('ar-EG', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: '2-digit' });
     const commentsCount = post.comments ? post.comments.length : 0;
 
     postDiv.innerHTML = `
@@ -153,7 +154,7 @@ function createPostElement(post) {
 }
 
 function createCommentElement(comment) {
-    const commentDate = new Date(comment.created_at).toLocaleString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+const commentDate = new Date(comment.created_at).toLocaleTimeString('ar-EG', { hour: 'numeric', minute: '2-digit' });
     return `
         <div class="comment-item">
             <div class="comment-header">
@@ -285,3 +286,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
