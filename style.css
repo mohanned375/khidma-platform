@@ -284,4 +284,35 @@ img { max-width: 100%; }
 .comment-submit-btn:hover {
     background-color: #45a049;
 }
+/* --- تحسينات على تنسيق رأس المنشور والتعليق --- */
+
+/* 1. تعديل رأس المنشور الرئيسي */
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline; /* محاذاة على خط الأساس للنصوص */
+    flex-wrap: nowrap;     /* منع انقسام السطر */
+    gap: 10px;             /* إضافة مسافة بسيطة بين العنصرين */
+}
+
+.post-author {
+    white-space: nowrap; /* منع اسم الكاتب من الانقسام */
+    overflow: hidden;
+    text-overflow: ellipsis; /* إضافة "..." إذا كان الاسم طويلاً جدًا */
+    flex-shrink: 1;          /* السماح له بالانكماش قليلاً إذا لزم الأمر */
+}
+
+.post-date {
+    font-size: 0.8rem;  /* تصغير حجم خط التاريخ والوقت */
+    color: #888;        /* تغيير اللون لجعله أقل بروزًا */
+    white-space: nowrap; /* منع التاريخ من الانقسام على سطرين */
+    flex-shrink: 0;     /* منع التاريخ من الانكماش */
+}
+
+/* 2. تعديل رأس التعليق (للتناسق) */
+.comment-date {
+    font-size: 0.75rem; /* تصغير حجم خط وقت التعليق أيضًا */
+    color: #999;
+}
+
 
