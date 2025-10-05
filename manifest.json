@@ -9,14 +9,15 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://mohanned375.github.io/khidma-platform/images/icon-192×192.png",
+      "src": "https://mohanned375.github.io/khidma-platform/images/icon-192x192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "https://mohanned375.github.io/khidma-platform/icon-512×512.png",
+      "src": "https://mohanned375.github.io/khidma-platform/icon-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ]
 }
+
