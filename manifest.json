@@ -2,7 +2,7 @@
   "name": "منصة خدمة",
   "short_name": "خدمة",
   "description": "منصة لربط العملاء بمقدمي الخدمات في مختلف المجالات.",
-  "start_url": "/index.html",
+  "start_url": "/khidma-platform/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4CAF50",
@@ -14,10 +14,9 @@
       "sizes": "192x192"
     },
     {
-      "src": "https://mohanned375.github.io/khidma-platform/icon-512x512.png",
+      "src": "https://mohanned375.github.io/khidma-platform/images/icon-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ]
 }
-
