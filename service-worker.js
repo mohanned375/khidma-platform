@@ -9,7 +9,7 @@ const urlsToCache = [
   '/script.js',
   '/privacy.html',
   'https://mohanned375.github.io/khidma-platform/images/icon-192x192.png', // أيقونة 192
-  'https://mohanned375.github.io/khidma-platform/images/icon-512×512',// أيقونة 512
+  'https://mohanned375.github.io/khidma-platform/images/icon-512x512',// أيقونة 512
 ];
 
 // 1. حدث التثبيت (Install): يتم فيه تخزين الملفات الأساسية
