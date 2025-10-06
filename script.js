@@ -125,7 +125,7 @@ async function loadPosts(filter = 'latest') {
     if (!posts || posts.length === 0) {
         postsList.innerHTML = '';
         noPostsMessage.style.display = 'block';
-        noPostsMessage.querySelector('p').textContent = 'لا توجد منشورات تطابق هذا الفلter.';
+        noPostsMessage.querySelector('p').textContent = 'لا توجد منشورات تطابق هذا الفلتر';
         return;
     }
     
@@ -325,5 +325,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
 
