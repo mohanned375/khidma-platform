@@ -213,10 +213,23 @@ async function addComment(postId) {
 // --- ربط الأحداث التي لا تحتاج إلى onclick ---
 // ========================================================
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadPosts();
+// ========================================================
+// --- ربط الأحداث التي لا تحتاج إلى onclick ---
+// ========================================================
 
-    // --- ربط نماذج الإرسال (Submit) ---
+document.addEventListener('DOMContentLoaded', () => {
+    // --- 1. تحميل المنشورات مع الفلتر الافتراضي (الأحدث) عند فتح الصفحة ---
+    loadPosts('latest');
+
+    // --- 2. ربط زر الفلترة بدالة loadPosts ---
+    const postsFilter = document.getElementById('postsFilter');
+    if (postsFilter) {
+        postsFilter.addEventListener('change', (e) => {
+            loadPosts(e.target.value);
+        });
+    }
+
+    // --- 3. بقية الدوال الخاصة بك كما هي دون تغيير ---
     document.getElementById('mainSearchBtn').addEventListener('click', () => {
         const query = document.getElementById('mainSearch').value;
         if (query) searchProviders({ keyword: query });
@@ -278,7 +291,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             document.getElementById('postSuccess').style.display = 'block';
             e.target.reset();
-            loadPosts();
+            // تحديث القائمة لعرض المنشور الجديد فورًا
+            loadPosts(document.getElementById('postsFilter').value); 
             setTimeout(() => {
                 closeModal('addPostModal');
                 document.getElementById('postSuccess').style.display = 'none';
