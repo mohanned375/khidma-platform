@@ -338,4 +338,10 @@ img { max-width: 100%; }
     cursor: pointer;
 }
 
+/* --- تنسيق المنشورات الجديدة --- */
+.post-item.new-post {
+    background-color: #f0f8ff; /* أزرق فاتح جدًا كخلفية */
+    border-left: 4px solid var(--primary-color);
+}
+
 
