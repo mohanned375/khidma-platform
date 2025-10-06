@@ -76,10 +76,13 @@ async function searchProviders(filters = {}) {
 
 
 // --- دالة loadPosts المحدثة بالكامل مع منطق الفلترة الصحيح ---
+// --- دالة loadPosts النهائية والمصححة بالكامل (إصدار أكثر أمانًا) ---
 async function loadPosts(filter = 'latest') {
     const postsList = document.getElementById('postsList');
     const noPostsMessage = document.getElementById('noPostsMessage');
-    postsList.innerHTML = '<p style="text-align: center;">جاري تحميل المنشورات...</p>';
+
+    // 1. عرض رسالة التحميل وإخفاء الرسالة القديمة
+    postsList.innerHTML = '<p style="text-align: center; padding: 20px;">جاري تحميل المنشورات...</p>';
     noPostsMessage.style.display = 'none';
 
     let query = supabase
@@ -87,56 +90,53 @@ async function loadPosts(filter = 'latest') {
         .select(`*, comments (id, content, author, created_at)`)
         .order('created_at', { ascending: false });
 
-    // =================================================================
-    // === هذا هو الجزء الذي تم تصحيحه بالكامل (منطق الفلترة) ===
-    // =================================================================
     if (filter !== 'all') {
         let fromDate;
-
         if (filter === 'latest') {
-            // "أحدث" نعني بها آخر 24 ساعة
-            const now = new Date(); // نسخة جديدة من التاريخ
+            const now = new Date();
             fromDate = new Date(now.setDate(now.getDate() - 1));
         } else if (filter === 'week') {
-            const now = new Date(); // نسخة جديدة من التاريخ
+            const now = new Date();
             fromDate = new Date(now.setDate(now.getDate() - 7));
         } else if (filter === 'month') {
-            const now = new Date(); // نسخة جديدة من التاريخ
+            const now = new Date();
             fromDate = new Date(now.setMonth(now.getMonth() - 1));
         }
-        
         if (fromDate) {
-            // .gte تعني "أكبر من أو يساوي" (Greater than or equal to)
             query = query.gte('created_at', fromDate.toISOString());
         }
     }
-    // =================================================================
-    // === نهاية الجزء المصحح ===
-    // =================================================================
 
     const { data: posts, error } = await query;
 
+    // 2. مسح رسالة التحميل قبل عرض النتائج
+    postsList.innerHTML = '';
+
     if (error) {
         console.error('Error loading posts:', error);
-        postsList.innerHTML = '<p style="color: red; text-align: center;">حدث خطأ في تحميل المنشورات.</p>';
+        postsList.innerHTML = '<p style="color: red; text-align: center; padding: 20px;">حدث خطأ في تحميل المنشورات.</p>';
         return;
     }
 
     if (!posts || posts.length === 0) {
-        postsList.innerHTML = '';
+        // 3. عرض رسالة "لا توجد منشورات" بطريقة آمنة
         noPostsMessage.style.display = 'block';
-        noPostsMessage.querySelector('p').textContent = 'لا توجد منشورات تطابق هذا الفلتر';
+        // نقوم بتحديث النص داخل الفقرة الموجودة بالفعل
+        const pElement = noPostsMessage.querySelector('p');
+        if (pElement) {
+            pElement.textContent = 'لا توجد منشورات تطابق هذا الفلتر.';
+        }
         return;
     }
     
+    // 4. إخفاء رسالة "لا توجد منشورات" وعرض المنشورات
     noPostsMessage.style.display = 'none';
-    postsList.innerHTML = '';
-
     posts.forEach(post => {
         const postElement = createPostElement(post);
         postsList.appendChild(postElement);
     });
 }
+
 
 // --- الدوال الجديدة التي تمت إضافتها هنا ---
 
@@ -325,6 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
 
 
