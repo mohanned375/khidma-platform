@@ -315,4 +315,27 @@ img { max-width: 100%; }
     color: #999;
 }
 
+/* --- تنسيقات فلتر المنشورات --- */
+.posts-filter-container {
+    display: flex;
+    justify-content: flex-end; /* لوضع الفلتر على اليسار */
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.posts-filter-container label {
+    font-weight: bold;
+    color: #555;
+}
+
+#postsFilter {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    font-family: 'Cairo', sans-serif; /* لضمان استخدام نفس الخط */
+    cursor: pointer;
+}
+
 
