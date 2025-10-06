@@ -76,14 +76,10 @@ async function searchProviders(filters = {}) {
 
 
 // --- دالة loadPosts المحدثة بالكامل مع منطق الفلترة الصحيح ---
-// --- دالة loadPosts النهائية والمصححة بالكامل (إصدار أكثر أمانًا) ---
+// --- هذا هو الكود الجديد والنهائي لدالة loadPosts ---
 async function loadPosts(filter = 'latest') {
     const postsList = document.getElementById('postsList');
-    const noPostsMessage = document.getElementById('noPostsMessage');
-
-    // 1. عرض رسالة التحميل وإخفاء الرسالة القديمة
     postsList.innerHTML = '<p style="text-align: center; padding: 20px;">جاري تحميل المنشورات...</p>';
-    noPostsMessage.style.display = 'none';
 
     let query = supabase
         .from('posts')
@@ -108,9 +104,7 @@ async function loadPosts(filter = 'latest') {
     }
 
     const { data: posts, error } = await query;
-
-    // 2. مسح رسالة التحميل قبل عرض النتائج
-    postsList.innerHTML = '';
+    postsList.innerHTML = ''; // مسح "جاري التحميل"
 
     if (error) {
         console.error('Error loading posts:', error);
@@ -119,18 +113,16 @@ async function loadPosts(filter = 'latest') {
     }
 
     if (!posts || posts.length === 0) {
-        // 3. عرض رسالة "لا توجد منشورات" بطريقة آمنة
-        noPostsMessage.style.display = 'block';
-        // نقوم بتحديث النص داخل الفقرة الموجودة بالفعل
-        const pElement = noPostsMessage.querySelector('p');
-        if (pElement) {
-            pElement.textContent = 'لا توجد منشورات تطابق هذا الفلتر.';
-        }
+        // إنشاء رسالة "لا توجد منشورات" ديناميكيًا فقط عند الحاجة
+        postsList.innerHTML = `
+            <div class="no-posts-message" style="display: block;">
+                <i class="fas fa-comments"></i>
+                <p>لا توجد منشورات تطابق هذا الفلتر.</p>
+            </div>
+        `;
         return;
     }
-    
-    // 4. إخفاء رسالة "لا توجد منشورات" وعرض المنشورات
-    noPostsMessage.style.display = 'none';
+        
     posts.forEach(post => {
         const postElement = createPostElement(post);
         postsList.appendChild(postElement);
@@ -325,6 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
 
 
