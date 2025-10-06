@@ -74,33 +74,58 @@ async function searchProviders(filters = {}) {
 // --- دوال المنشورات والتعليقات ---
 // ========================================================
 
-async function loadPosts() {
+
+// --- دالة loadPosts المحدثة بالكامل مع منطق الفلترة الصحيح ---
+async function loadPosts(filter = 'latest') {
     const postsList = document.getElementById('postsList');
     const noPostsMessage = document.getElementById('noPostsMessage');
-    
-    const { data: posts, error } = await supabase
+    postsList.innerHTML = '<p style="text-align: center;">جاري تحميل المنشورات...</p>';
+    noPostsMessage.style.display = 'none';
+
+    let query = supabase
         .from('posts')
-        .select(`
-            *,
-            comments (
-                id,
-                content,
-                author,
-                created_at
-            )
-        `)
+        .select(`*, comments (id, content, author, created_at)`)
         .order('created_at', { ascending: false });
+
+    // =================================================================
+    // === هذا هو الجزء الذي تم تصحيحه بالكامل (منطق الفلترة) ===
+    // =================================================================
+    if (filter !== 'all') {
+        let fromDate;
+
+        if (filter === 'latest') {
+            // "أحدث" نعني بها آخر 24 ساعة
+            const now = new Date(); // نسخة جديدة من التاريخ
+            fromDate = new Date(now.setDate(now.getDate() - 1));
+        } else if (filter === 'week') {
+            const now = new Date(); // نسخة جديدة من التاريخ
+            fromDate = new Date(now.setDate(now.getDate() - 7));
+        } else if (filter === 'month') {
+            const now = new Date(); // نسخة جديدة من التاريخ
+            fromDate = new Date(now.setMonth(now.getMonth() - 1));
+        }
+        
+        if (fromDate) {
+            // .gte تعني "أكبر من أو يساوي" (Greater than or equal to)
+            query = query.gte('created_at', fromDate.toISOString());
+        }
+    }
+    // =================================================================
+    // === نهاية الجزء المصحح ===
+    // =================================================================
+
+    const { data: posts, error } = await query;
 
     if (error) {
         console.error('Error loading posts:', error);
         postsList.innerHTML = '<p style="color: red; text-align: center;">حدث خطأ في تحميل المنشورات.</p>';
-        noPostsMessage.style.display = 'none';
         return;
     }
 
     if (!posts || posts.length === 0) {
         postsList.innerHTML = '';
         noPostsMessage.style.display = 'block';
+        noPostsMessage.querySelector('p').textContent = 'لا توجد منشورات تطابق هذا الفلter.';
         return;
     }
     
@@ -300,4 +325,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
