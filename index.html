@@ -80,6 +80,18 @@
     <section class="posts-section" id="posts">
         <div class="container">
             <h2 class="section-title">منشورات المجتمع</h2>
+            <!-- === كود الفلترة الجديد (يُضاف بعد عنوان "منشورات المجتمع") === -->
+<div class="posts-filter-container">
+    <label for="postsFilter">عرض:</label>
+    <select id="postsFilter">
+        <option value="latest">أحدث المنشورات</option>
+        <option value="week">قبل أسبوع</option>
+        <option value="month">قبل شهر</option>
+        <option value="all">كل المنشورات</option>
+    </select>
+</div>
+<!-- ============================================================= -->
+
             <div class="add-post-container"><button class="btn btn-primary" onclick="openModal('addPostModal')"><i class="fas fa-plus"></i> إضافة منشور جديد</button></div>
             <div class="posts-container" id="postsContainer"><div class="posts-list" id="postsList"><div class="no-posts-message" id="noPostsMessage"><i class="fas fa-comments"></i><p>لا توجد منشورات حتى الآن.</p></div></div></div>
         </div>
@@ -159,6 +171,7 @@
 
 </body>
 </html>
+
 
 
 
