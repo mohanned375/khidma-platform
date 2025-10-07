@@ -77,6 +77,7 @@ async function searchProviders(filters = {}) {
 
 // --- دالة loadPosts المحدثة بالكامل مع منطق الفلترة الصحيح ---
 // --- هذا هو الكود الجديد والنهائي لدالة loadPosts ---
+// --- دالة loadPosts النهائية والمصححة بالكامل (إصدار 2) ---
 async function loadPosts(filter = 'latest') {
     const postsList = document.getElementById('postsList');
     postsList.innerHTML = '<p style="text-align: center; padding: 20px;">جاري تحميل المنشورات...</p>';
@@ -95,8 +96,10 @@ async function loadPosts(filter = 'latest') {
             const now = new Date();
             fromDate = new Date(now.setDate(now.getDate() - 7));
         } else if (filter === 'month') {
+            // === هذا هو السطر الذي تم تصحيحه ===
             const now = new Date();
-            fromDate = new Date(now.setMonth(now.getMonth() - 1));
+            fromDate = new Date(now.setDate(now.getDate() - 30));
+            // ==================================
         }
         if (fromDate) {
             query = query.gte('created_at', fromDate.toISOString());
@@ -104,7 +107,7 @@ async function loadPosts(filter = 'latest') {
     }
 
     const { data: posts, error } = await query;
-    postsList.innerHTML = ''; // مسح "جاري التحميل"
+    postsList.innerHTML = '';
 
     if (error) {
         console.error('Error loading posts:', error);
@@ -113,7 +116,6 @@ async function loadPosts(filter = 'latest') {
     }
 
     if (!posts || posts.length === 0) {
-        // إنشاء رسالة "لا توجد منشورات" ديناميكيًا فقط عند الحاجة
         postsList.innerHTML = `
             <div class="no-posts-message" style="display: block;">
                 <i class="fas fa-comments"></i>
@@ -122,7 +124,7 @@ async function loadPosts(filter = 'latest') {
         `;
         return;
     }
-        
+    
     posts.forEach(post => {
         const postElement = createPostElement(post);
         postsList.appendChild(postElement);
@@ -317,6 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
 
 
